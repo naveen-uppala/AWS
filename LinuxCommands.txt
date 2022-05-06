@@ -31,4 +31,4 @@
 31) yum -> to download and install software packages and dependencies from RPM repository
 32) ls -a  -> To list all files (including hidden files) and folders in current directory
 33)cp -i from_path  to_path    -> copy files from one location to other location
-34) clear -> To clear the screen(Shorcut-CTRL + L)
+34) clear -> To clear the screen(Shorcut-CTRL + L).
