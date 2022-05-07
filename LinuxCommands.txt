@@ -30,5 +30,8 @@
 30) wget/curl  -> To download files from internet
 31) yum -> to download and install software packages and dependencies from RPM repository
 32) ls -a  -> To list all files (including hidden files) and folders in current directory
-33)cp -i from_path  to_path    -> copy files from one location to other location
-34) clear -> To clear the screen(Shorcut-CTRL + L).
+33) cp -i from_path  to_path    -> copy files from one location to other location
+34) clear -> To clear the screen(Shorcut-CTRL + L)
+35) rpm -qa  -> To display the installed packages
+36) rpm -qi   -> To display installed packages along with package version and description
+37) rpm -e  -> Erase packages
