@@ -1,1 +1,56 @@
 
+########################## UPDATE LINUX PACKAGES ###################
+
+1) sudo yum update -y
+
+########################## INSTALL JAVA-jdk-11 ###################
+
+1) sudo amazon-linux-extras install java-openjdk11 -y
+
+########################## INSTALL MAVEN ###################
+
+1) sudo wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
+
+2) sudo sed -i s/\$releasever/6/g /etc/yum.repos.d/epel-apache-maven.repo
+
+3) sudo yum install  apache-maven -y
+
+4) sudo update-alternatives --config java #pick java 11       
+
+5) mvn --version
+
+########################## INSTALL DOCKER ###################
+
+1) sudo yum update -y
+
+2) sudo amazon-linux-extras install docker
+
+3) sudo service docker start
+
+4) sudo systemctl enable docker
+
+5) sudo setfacl -m user:ec2-user:rw /var/run/docker.sock
+
+6) sudo usermod -a -G docker ec2-user
+
+
+########################## INSTALL GIT ###################
+
+1) sudo yum install git -y
+
+########################## CLONE GIT REPOSITORY ###################
+
+1) git clone https://github.com/Uppala-Naveen-Goud/BackendServer.git (Clone git repository into local machine)
+
+2) cd BackendServer ( Change directory into project folder)
+
+
+########################## RUN JAVA APPLICATION USING DOCKER  ###################
+
+1) docker build -f Dockerfile -t springboot . (Build docker image using Dockerfile in project folder)
+
+2) docker run -it --name container_name -p 8081:8081 image_name (Run the docker Image by giving the container name, port number and specifying the Image name at the end)
+
+
+########################## STOP JAVA APPLICATION ###################
+1) curl -X POST localhost:8081/actuator/shutdown  ( To stop running spring boot application)
