@@ -6,7 +6,7 @@
 
 1) sudo amazon-linux-extras install java-openjdk11 -y
 
-##########################INSTALL MAVEN ###################
+########################## INSTALL MAVEN ###################
 
 1) sudo wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
 
@@ -19,11 +19,11 @@
 5) mvn --version
 
 
-########################## INSTALL GIT###################
+########################## INSTALL GIT ###################
 
 1) sudo yum install git -y
 
-########################## RUN JAVA APPLICATION###################
+########################## RUN JAVA APPLICATION ###################
 
 1) git clone https://github.com/Uppala-Naveen-Goud/BackendServer.git (Clone git repository into local machine)
 
@@ -35,4 +35,5 @@
 
 5) nohup java -jar app.jar & (Run SpringBoot application in the background using nohup command)
 
-6) curl -X POST localhost:8080/actuator/shutdown  ( To stop running spring boot application)
+########################## STOP JAVA APPLICATION ###################
+1) curl -X POST localhost:8081/actuator/shutdown  ( To stop running spring boot application)
