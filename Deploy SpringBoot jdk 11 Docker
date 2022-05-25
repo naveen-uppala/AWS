@@ -47,9 +47,11 @@
 
 ########################## RUN JAVA APPLICATION USING DOCKER  ###################
 
-1) docker build -f Dockerfile -t springboot . (Build docker image using Dockerfile in project folder)
+1) mvn clean install (To build Java application. Jar file will be created)
 
-2) docker run -it --name container_name -p 8081:8081 image_name (Run the docker Image by giving the container name, port number and specifying the Image name at the end)
+2) docker build -f Dockerfile -t springboot . (Build docker image using Dockerfile in project folder)
+
+3) docker run -it --name container_name -p 8081:8081 image_name (Run the docker Image by giving the container name, port number and specifying the Image name at the end)
 
 
 ########################## STOP JAVA APPLICATION ###################
