@@ -1,0 +1,41 @@
+
+==================== Jenkins ==========================
+sudo yum -y update
+
+sudo amazon-linux-extras install java-openjdk11 -y
+
+sudo wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
+
+sudo sed -i s/\$releasever/6/g /etc/yum.repos.d/epel-apache-maven.repo
+
+sudo yum install  apache-maven -y
+
+sudo update-alternatives --config java #pick java 11
+
+sudo yum install git -y
+
+sudo wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat/jenkins.repo
+
+sudo rpm --import https://pkg.jenkins.io/redhat/jenkins.io.key
+
+sudo yum install jenkins -y
+
+sudo systemctl start jenkins
+
+systemctl status jenkins
+
+sudo amazon-linux-extras install docker -y
+
+sudo systemctl start docker
+
+sudo systemctl enable docker
+
+sudo setfacl -m user:ec2-user:rw /var/run/docker.sock
+
+sudo usermod -aG docker jenkins
+
+sudo vi /etc/sudoers  ========> jenkins ALL=(ALL) NOPASSWD: ALL
+
+sudo service jenkins restart
+
+sudo systemctl enable jenkins
