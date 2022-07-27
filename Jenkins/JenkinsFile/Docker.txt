@@ -1,11 +1,12 @@
 pipeline{
-    agent any
+
+    agent {label '#####'}
 
     stages {
         
         stage("cloning git repository"){
             steps{
-                git branch: 'develop', credentialsId: 'git_credentials', url: 'https://github.com/Uppala-Naveen-Goud/Backend.git'
+                git branch: '######', credentialsId: 'git_credentials', url: '########################'
             }
         }    
         stage("build"){
@@ -33,7 +34,7 @@ pipeline{
    
         stage('RUN IMAGE') {
          steps{  
-            sh "docker run -d --name springboot -p 8083:8083  packersmovers:0.0.1 "
+            sh "docker run -d --name springboot -p 8081:8081  packersmovers:0.0.1 "
             }
          }    
     }
