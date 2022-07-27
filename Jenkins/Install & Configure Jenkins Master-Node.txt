@@ -1,0 +1,33 @@
+
+==================== Update Linux Packages ==========================
+
+sudo yum -y update
+
+==================== Install Java 11 ===============================
+
+sudo amazon-linux-extras install java-openjdk11 -y
+
+==================== Install Jenkins Server ===========================
+
+sudo wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat/jenkins.repo
+
+sudo rpm --import https://pkg.jenkins.io/redhat/jenkins.io.key
+
+sudo yum install jenkins -y
+
+sudo systemctl start jenkins
+
+systemctl status jenkins
+
+==================== Assign Root Privileges to Jenkins User ==========================
+
+
+sudo vi /etc/sudoers  
+
+
+
+jenkins ALL=(ALL) NOPASSWD: ALL
+
+sudo service jenkins restart
+
+sudo systemctl enable jenkins
