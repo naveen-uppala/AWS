@@ -1,0 +1,51 @@
+pipeline {
+    agent any
+    
+    tools {
+        maven 'Maven3'
+    }
+    
+    environment {
+        registry = "684969240791.dkr.ecr.ap-south-1.amazonaws.com/eks-registry"
+    }
+
+    stages {
+        stage('checkout') {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Uppala-Naveen-Goud/springboot-app']]])
+            }
+        }    
+        stage('Build Jar') {
+            steps {
+                sh "mvn clean install"
+            }    
+        }
+        
+        stage('Build Image'){
+            steps{
+                script{
+                    docker.build registry
+                }
+            }
+        }
+        
+        stage('Push to ECR'){
+            steps{
+                sh "aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 684969240791.dkr.ecr.ap-south-1.amazonaws.com"
+                sh "docker push 684969240791.dkr.ecr.ap-south-1.amazonaws.com/eks-registry:latest"
+            }
+        }
+        
+        stage('K8S deploy'){
+            steps{
+                withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'K8S', namespace: '', serverUrl: '') {
+                 sh "kubectl apply -f eks-deploy-k8s.yaml"
+                
+                    
+                }
+            }
+        }
+        
+        
+    }
+}

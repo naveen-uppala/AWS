@@ -44,3 +44,4 @@
 ########################## STOP JAVA APPLICATION ###################
 
 1) curl -X POST localhost:8081/actuator/shutdown  ( To stop running spring boot application)
+

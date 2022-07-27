@@ -1,0 +1,74 @@
+############################# CREATE PUBLIC SUBNETS INSIDE VPC AND TEST IN BOUND AND OUT BOUND TRAFFIC ###############################
+
+
+
+############################# CREATE VPC ###################################
+
+1) Go to VPC Dashboard in AWS console and click on your VPCs
+
+2) Click on create VPC button and enter VPC name, select IPV4 CIDR block - manual input and CIDR range of your choice(ex: 192.169.0.0/16) .
+
+3) Leave IPV6 CIDR block as default option - No IPV6 CIDR block.
+
+4) Go to Actions, click on "Edit DNS hostnames" and enable 'DNS hostnames' and  save changes.
+
+
+
+############################# CREATE INTERNET GATEWAY ##########################
+
+1) Go to VPC Dashboard in AWS console and click on "Internet Gateways".
+
+2) Click on "Create internet gateway" button 
+
+3) Give the name and click on "Create internet gateway" button 
+
+4) Go to Actions, click on "Attach to VPC"
+
+5) Select the VPC that you've created and click on "Attach internet gateway"
+
+
+
+############################# CREATE SUBNETS ################################
+
+1) Go to VPC Dashboard in AWS console and click on "Subnets".
+
+2) Click on 'create subnet' button and select VPC that you've created.
+
+3) Enter the subnet name, select availability zone and IPV4 CIDR range of your choice(ex: 192.169.32.0/20) .
+
+4) If you want to create more subnets click on "Add new subnet" else click on "Create subnet".
+
+5) Select the subnet and click on Actions, click on"Edit subnet settings"
+
+6) Tag the check box "Enable auto-assign public IPV4 address and click on Save.
+
+
+
+############################# CREATE PUBLIC ROUTE TABLE ################################
+
+1) Go to VPC Dashboard in AWS console and click on "Route tables"
+
+2) Enter the Route table name, select the desired VPC, tag name and click on "Create route table"
+
+3) Select the created Route table, go to "Routes" tab and click on "Edit routes".
+
+4) Enter "0.0.0.0/0" in the Destination and "Internet Gateway"(select the created internet gateway) in the Target field and click on "Save changes".
+
+5) Select the created Route table, go to Subnet associations, under Explicit subnet associations, click on "Edit subnet associations".
+
+6) Select the available subnet associations and click on "Save associations"
+
+
+############################# TEST IN BOUND TRAFFIC ###############################
+
+1) Create an EC2 instance with a sample web application running on it on a public subnet that you have created above.
+
+Note: To run a sample web application on EC2 instnace use the userdata script to install Apache server(httpd) and write a single line of html code.
+
+2) Copy and paste the public ip address of EC2 instance on web browser and check if you are able to access the website.
+
+
+############################ TEST OUT BOUND TRAFFIC ###############################
+
+1) Go to EC2 dashboard and click on running instances
+

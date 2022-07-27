@@ -1,0 +1,46 @@
+1) docker –version  --> This command is used to get the currently installed version of docker
+
+2) docker pull  --> This command is used to pull images from the docker repository(hub.docker.com)
+   Usage: docker pull <image name>
+
+3) docker run  -->  This command is used to create a container from an image
+   Usage: docker run -it -d <image name>
+
+4) docker ps  -->  This command is used to list the running containers
+
+5) docker ps -a  -->  This command is used to show all the running and exited containers
+
+6) docker exec  -->  This command is used to access the running container
+   Usage: docker exec -it <container-id> bash
+
+7) docker stop  -->  This command stops a running container
+   Usage: docker stop <container-id>
+
+8) docker kill  -->  This command kills the container by stopping its execution immediately. 
+   The difference between ‘docker kill’ and ‘docker stop’ is that ‘docker stop’ gives the container time to shutdown gracefully,
+   in situations when it is taking too much time for getting the container to stop, one can opt to kill it 
+   Usage: docker kill <container id>
+
+9) docker commit  -->  This command creates a new image of an edited container on the local system
+   Usage: docker commit <conatainer id> <username/imagename>
+
+10) docker login  -->  This command is used to login to the docker hub repository
+
+11) docker push  -->  This command is used to push an image to the docker hub repository
+    Usage: docker push <username/image name>
+
+12) docker images  -->  This command lists all the locally stored docker images
+
+13) docker rm  -->  This command is used to delete a stopped container
+    Usage: docker rm <container-id>
+
+14) docker rmi  -->  This command is used to delete an image from local storage
+    Usage: docker rmi <image-id>
+
+15) docker build  -->  This command is used to build an image from a specified docker file
+    Usage: docker build <path to docker file>
+    
+16) docker logs -->  Displays the logs of the docker container with container id mentioned in the command.
+    Usage: docker logs <container-id>
+    
+17) docker logout  -->  This command is used to logout from docker hub repository

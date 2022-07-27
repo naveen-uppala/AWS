@@ -1,0 +1,112 @@
+############################# CREATE PRIVATE SUBNETS INSIDE VPC AND TEST IN BOUND AND OUT BOUND TRAFFIC ###############################
+
+
+
+############################# CREATE VPC ###################################
+
+1) Use the same VPC that was created for public subnet
+
+
+############################# CREATE PRIVATE SUBNETS ################################
+
+1) Go to VPC Dashboard in AWS console and click on "Subnets".
+
+2) Click on 'create subnet' button and select VPC created for public subnet.
+
+3) Enter the subnet name, select availability zone and IPV4 CIDR range of your choice(ex: 192.169.32.0/20) .
+
+4) If you want to create more subnets click on "Add new subnet" else click on "Create subnet".
+
+5) click on create subnet.
+
+
+
+############################# CREATE ELASTIC IP ##########################
+
+1) Go to EC2 Dashboard in AWS console and click on "Elastic IPs" in Network & Security
+
+2) Click on "Allocate Elastic IP address" button 
+
+3) Go to Tags-Optional and click on  "Add new Tag button"
+
+4) Give key as Name and value of your choice(ex:NAT1) and Click on "Allocate" button
+
+
+
+############################# CREATE NAT GATEWAY ##########################
+
+NOTE: Prerequisite for creating NAT Gateway is public subnet
+
+2) Go to VPC Dashboard and click on NAT gateways in Virtual private cloud 
+
+2) Click on "Create NAT gateway".
+
+3) Go to NAT gateway settings and enter the gateway name.
+
+4) select the desired public subnet.
+
+5) Select Public as the connectivity type.
+
+6) Select created ELASTIC IP and Click on Create NAT gateway.
+
+
+
+
+
+############################# CREATE PRIVATE ROUTE TABLE ################################
+
+1) Go to Virtual private cloud in the VPC Dashboard and click on "Route tables"
+
+2) Enter the Route table name, select the desired VPC, tag name and click on "Create route table"
+
+3) Select the created Route table, go to "Routes" tab and click on "Edit routes".
+
+4) Enter "0.0.0.0/0" in the Destination and "NAT Gateway"(select the created NAT gateway) in the Target field and click on "Save changes".
+
+5) Select the created Route table, go to Subnet associations, under Explicit subnet associations, click on "Edit subnet associations".
+
+6) Select the available subnet associations and click on "Save associations"
+
+
+############################# TEST IN BOUND TRAFFIC ###############################
+
+1) In the Private subnet public ipv4 address is not enabled so InBound Traffic Connectivity doesn't exist for this
+
+
+############################ TEST OUT BOUND TRAFFIC ###############################
+
+OutBound Connectivity can happen in two ways. Through IAM Role and Through Public subnet
+
+IAM Role:
+
+1) Go to IAM Dashboard 
+
+2) Go to Roles and click on Create role
+
+3) Select "AWS Service" in Trusted Entity Type, "EC2" in Use Case and click on next
+
+4) Go to "Add Permissions" and select AmazonSSMManagedInstanceCore ploicy to add
+
+5)Give Role name in the Role details and click on create role
+
+6) Now go to private Ec2 Instance and click on security inside Actions
+
+7) Click on Modify IAM Role and select the IAM role created in the above step. 
+
+8) Click on Update IAM Role. In this way role will get attachedto the Ec2 instance
+
+9) Go to System Manager Dashboard and click on Run Command
+
+10) Select AWS-RunShellScript in the command document and give sudo installation comman(Sudo yum install java -y)d in the Command Parameters
+
+11) Go to Targets and click on Choose instance manually and select the required instance from the instances shown below
+
+12) Disable all other options and click on Run 
+
+Public subnet:
+
+1) Connect to Public subnet through MobaXterm 
+
+2) Go to private instance and click on connectivity
+ 
+3) Go to SSH Client, copy SSH command and paste in MobaXterm by removing keyvalue pair  
