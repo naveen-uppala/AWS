@@ -1,3 +1,4 @@
+=====================Install Jenkins Server on EC2 Machine(Master Node) ====================
 
 ==================== Update Linux Packages ==========================
 
@@ -31,3 +32,44 @@ jenkins ALL=(ALL) NOPASSWD: ALL
 sudo service jenkins restart
 
 sudo systemctl enable jenkins
+
+===================Create new Ec2 Instance and configure Slave Node =================
+
+==================== Update Linux Packages ==========================
+
+sudo yum -y update
+
+==================== Install Java 11 ===============================
+
+sudo amazon-linux-extras install java-openjdk11 -y
+
+===============setup jenkins slave =======================
+
+1) sudo useradd jenkins-slave1
+
+2) sudo su - jenkins-slave1
+
+3) ssh-keygen -t rsa -N "" -f /home/jenkins-slave1/.ssh/id_rsa
+
+4) cd .ssh
+
+5) cat id_rsa.pub > authorized_keys
+
+6) chmod 700 authorized_keys
+
+
+===============setup jenkins Master =======================
+
+1) sudo mkdir -p /var/lib/jenkins/.ssh
+
+2) cd /var/lib/jenkins/
+
+3) sudo chmod 777 .ssh
+
+3) sudo ssh-keyscan -H  private-ipaddress-slave-node >>/var/lib/jenkins/.ssh/known_hosts
+
+5) cd .ssh
+
+6) sudo chown jenkins:jenkins known_hosts
+
+7) sudo chmod 700 known_hosts
