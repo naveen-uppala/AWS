@@ -75,9 +75,12 @@ sudo amazon-linux-extras install java-openjdk11 -y
 7) sudo chmod 700 known_hosts
 
 ======================For generating keypair for jenkins slave node ======================
+Note: Connect to your slave node
 
-1) sudo su - jenkins-slave1
+1) sudo su 
 
-2) cd .ssh
+2) sudo su - jenkins-slave1
 
-3) more id_rsa
+3) cd .ssh
+
+4) more id_rsa
