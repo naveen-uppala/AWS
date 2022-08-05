@@ -26,7 +26,7 @@
 
 14) sudo su -> To login as root user
 
-15) sudo su username -> To login as specific user
+15) sudo su - username -> To login as specific user
 
 16) whoami -> To check current user
 
