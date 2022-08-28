@@ -45,17 +45,21 @@ sudo amazon-linux-extras install java-openjdk11 -y
 
 ===============setup jenkins slave =======================
 
+1) sudo su
+
 1) sudo useradd jenkins-slave1
 
-2) sudo su - jenkins-slave1
+2) passwd jenkins-slave1 # set password for user jenkins-slave1
 
-3) ssh-keygen -t rsa -N "" -f /home/jenkins-slave1/.ssh/id_rsa
+3) sudo su - jenkins-slave1
 
-4) cd .ssh
+4) ssh-keygen -t rsa -N "" -f /home/jenkins-slave1/.ssh/id_rsa
 
-5) cat id_rsa.pub > authorized_keys
+5) cd .ssh
 
-6) chmod 700 authorized_keys
+6) cat id_rsa.pub > authorized_keys
+
+7) chmod 700 authorized_keys
 
 
 ===============setup jenkins Master =======================
