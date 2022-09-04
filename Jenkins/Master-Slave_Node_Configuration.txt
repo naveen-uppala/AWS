@@ -1,4 +1,5 @@
 =====================Install Jenkins Server on EC2 Machine(Master Node) ====================
+============================================================================================
 
 ==================== Update Linux Packages ==========================
 
@@ -22,18 +23,19 @@ systemctl status jenkins
 
 ==================== Assign Root Privileges to Jenkins User ==========================
 
-
 sudo vi /etc/sudoers  
 
-
-
 jenkins ALL=(ALL) NOPASSWD: ALL
+
+==================== Restart Jenkins server and enable it ==========================
 
 sudo service jenkins restart
 
 sudo systemctl enable jenkins
 
+
 ===================Create new Ec2 Instance and configure Slave Node =================
+=====================================================================================
 
 ==================== Update Linux Packages ==========================
 
@@ -62,7 +64,9 @@ sudo amazon-linux-extras install java-openjdk11 -y
 7) chmod 700 authorized_keys
 
 
-===============setup jenkins Master =======================
+===============Configure Jenkins Master with Slave Node =======================
+===============================================================================
+Note:Execute the below commands on Master Node
 
 1) sudo mkdir -p /var/lib/jenkins/.ssh
 
@@ -78,13 +82,15 @@ sudo amazon-linux-extras install java-openjdk11 -y
 
 7) sudo chmod 700 known_hosts
 
-======================For generating keypair for jenkins slave node ======================
+======================Copy the key-pair from jenkins slave node ======================
+==========================================================================================             
 Note: Connect to your slave node
 
-1) sudo su 
+1) sudo su - jenkins-slave1
 
-2) sudo su - jenkins-slave1
+2) cd .ssh
 
-3) cd .ssh
+3) more id_rsa
 
-4) more id_rsa
+4) Create the credentials on the Jenkins Master using this keypair and username(jenkins-slave1)
+
