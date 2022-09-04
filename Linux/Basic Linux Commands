@@ -1,0 +1,73 @@
+1) cd folder-name - Change Directory:   It is used to change path/location/directory to other path/location/directory.
+
+2) pwd - Present working Directory: To check current path.
+
+3) ls -  To list the files or folders in current path
+
+4) ll - To list the files and folders with RWX permissions.
+
+5) mv - To moves files from location/folder to other folders
+
+6) rm - To remove/delete files or folders
+
+7) rm -rf -> To remove files or folders recursively
+
+8) useradd  username-> To create a new user in linux
+
+9) touch  -> To create a text file.
+
+10) mkdir -> To create a new folder/directory
+
+11) vi -> To edit the text file
+
+12) cat -> To view the contents of text file
+
+13) sudo -> Admin priviliges
+
+14) sudo su -> To login as root user
+
+15) sudo su - username -> To login as specific user
+
+16) whoami -> To check current user
+
+17) cat /etc/passwd -> To view the total number users created in our system
+
+18) cd -> To enter default user folder
+
+19) cd / -> To enter root directory
+
+20) cd .. -> go to previous directory
+
+21) echo -> to print the contents of file
+
+22) username passwd -> To change the password for the user
+
+23) nohup -> To run the applications in the background
+
+24) ifconfig -> To display the system/server ip address
+
+25) chmod -> To change mode of directory
+
+26) usrmod  -> To command to add a user to a group, change a user shell, login name, home directory, and more.
+
+27) grep -> To concatenate the text or two different commands
+
+28) kill -> To stop current running processes
+
+29) find -> used to search any file 
+
+30) wget/curl  -> To download files from internet
+
+31) yum -> to download and install software packages and dependencies from RPM repository
+
+32) ls -a  -> To list all files (including hidden files) and folders in current directory
+
+33) cp -i from_path  to_path    -> copy files from one location to other location
+
+34) clear -> To clear the screen(Shorcut-CTRL + L)
+
+35) rpm -qa  -> To display the installed packages
+
+36) rpm -qi   -> To display installed packages along with package version and description
+
+37) rpm -e  -> Erase packages
