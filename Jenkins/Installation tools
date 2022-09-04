@@ -1,0 +1,34 @@
+==================== Update Linux Packages ==========================
+
+sudo yum -y update
+
+==================== Install Java 11 ==========================
+
+sudo amazon-linux-extras install java-openjdk11 -y
+
+==================== Install Maven==========================
+
+sudo wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
+
+sudo sed -i s/\$releasever/6/g /etc/yum.repos.d/epel-apache-maven.repo
+
+sudo yum install  apache-maven -y
+
+==================== Configure Specific version of Java==========================
+sudo update-alternatives --config java #pick java 11
+
+==================== Install GIT ==========================
+
+sudo yum install git -y
+
+==================== Install Docker ==========================
+
+sudo amazon-linux-extras install docker -y
+
+sudo systemctl start docker
+
+sudo systemctl enable docker
+
+sudo setfacl -m user:"username":rw /var/run/docker.sock 
+
+sudo usermod -aG docker "username"
