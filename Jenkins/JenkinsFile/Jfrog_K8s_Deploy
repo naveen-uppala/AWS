@@ -1,0 +1,54 @@
+pipeline{
+
+       //agent any	
+    agent { label 'slave1'}
+    
+        environment {
+        IMAGE_REPO_NAME="packer"
+        IMAGE_TAG="latest"
+        IMAGE_URI="tcn.jfrog.io/packersmovers"
+        
+    }
+    
+
+    
+    stages {
+        
+        stage("cloning git repository"){
+            steps{
+                git branch: 'develop', credentialsId: 'git_credentials', url: 'https://github.com/Uppala-Naveen-Goud/Backend.git'
+            }
+        }    
+        stage("build"){
+            steps{
+               sh "mvn clean install"
+            }    
+        }
+        
+        stage('Building image') {
+            steps{
+                script {
+                    dockerImage = docker.build "${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+                }
+            }
+        }
+   
+    // Uploading Docker images into AWS ECR
+    stage('Pushing to Jfrog Artifactory') {
+     steps{  
+         script {
+                sh "docker tag packersmovers ${IMAGE_URI}/${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+                sh "docker push ${IMAGE_URI}/${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+            }
+        }
+     }  
+     
+     stage('K8S deploy'){
+            steps{
+                withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'k8s-cluster', namespace: '', serverUrl: '') {
+                 sh "/home/jenkins-slave1/bin/kubectl apply -f eks-deploy-k8s.yaml"}
+            }
+        }
+    }
+    
+}    
