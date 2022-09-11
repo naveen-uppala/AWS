@@ -33,9 +33,11 @@ pipeline{
          }
    
         stage('RUN IMAGE') {
+        node(''){
          steps{  
             sh "docker run -d --name springboot -p 8081:8081  packersmovers:0.0.1 "
             }
-         }    
+         }
+         }
     }
 }
