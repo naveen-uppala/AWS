@@ -6,6 +6,7 @@ pipeline{
         AWS_DEFAULT_REGION="############"
         IMAGE_NAME="############"
         IMAGE_TAG="############"
+        CONTAINER_NAME="############"
         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_NAME}":${IMAGE_TAG}"
     }
     
@@ -48,6 +49,23 @@ pipeline{
                 sh "docker push ${REPOSITORY_URI}"
             }
         }
-     }    
+     } 
+     
+     stage('Stop and delete the running container') {
+         steps{  
+             catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE'){
+                    sh "docker stop springboot"
+                    sh "docker rm springboot"
+             }    
+            }
+         }
+   
+        stage('RUN IMAGE') {
+        node(''){
+         steps{  
+            sh "docker run -d --name ${CONTAINER_NAME} -p 8081:8081 ${IMAGE_NAME}:${IMAGE_TAG}"
+            }
+         }
+         }
     }
 }
