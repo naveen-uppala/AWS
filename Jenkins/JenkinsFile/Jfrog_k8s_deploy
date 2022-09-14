@@ -33,7 +33,7 @@ pipeline{
             }
         }
    
-    // Uploading Docker images into AWS ECR
+    // Uploading Docker images into JFrog Artifactory
     stage('Pushing to Jfrog Artifactory') {
      steps{  
          script {
