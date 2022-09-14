@@ -5,7 +5,7 @@ pipeline{
         AWS_ACCOUNT_ID="############"
         AWS_DEFAULT_REGION="############"
         IMAGE_NAME="############"
-        IMAGE_TAG="############"
+        IMAGE_TAG="${currentBuild.number}"
         CONTAINER_NAME="############"
         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_NAME}":${IMAGE_TAG}"
     }
@@ -64,6 +64,7 @@ pipeline{
      stage('Install docker'){           
          agent { label 'BackendServer'}  
             steps{ 
+               sh "aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
                sh "docker pull ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_NAME}":${IMAGE_TAG}"
                sh "docker run -d --name ${CONTAINER_NAME} -p 8081:8081 ${IMAGE_NAME}:${IMAGE_TAG}"
             }
