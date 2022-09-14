@@ -4,9 +4,9 @@ pipeline{
     agent { label 'slave1'}
     
         environment {
-        IMAGE_REPO_NAME="packer"
+        IMAGE_NAME="packer"
         IMAGE_TAG="latest"
-        IMAGE_URI="tcn.jfrog.io/packersmovers"
+        IMAGE_URI="tcn.jfrog.io/packersmovers/${IMAGE_NAME}:${IMAGE_TAG}"
         
     }
     
@@ -28,13 +28,13 @@ pipeline{
         stage('Building image') {
             steps{
                 script {
-                    dockerImage = docker.build "${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+                    dockerImage = docker.build "${IMAGE_NAME}:${IMAGE_TAG}"
                 }
             }
         }
    
-    // Uploading Docker images into AWS ECR
-    stage('Pushing to Jfrog Artifactory') {
+    // Uploading Docker images into JFrog Artifactory
+    stage('Pushing to JFrog Artifactory') {
      steps{  
          script {
                 sh "docker tag packersmovers ${IMAGE_URI}/${IMAGE_REPO_NAME}:${IMAGE_TAG}"
