@@ -54,18 +54,17 @@ pipeline{
      stage('Stop and delete the running container') {
          steps{  
              catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE'){
-                    sh "docker stop springboot"
-                    sh "docker rm springboot"
+                    sh "docker stop ${CONTAINER_NAME}"
+                    sh "docker rm ${CONTAINER_NAME}"
              }    
             }
          }
    
-        stage('RUN IMAGE') {
-        node(''){
-         steps{  
-            sh "docker run -d --name ${CONTAINER_NAME} -p 8081:8081 ${IMAGE_NAME}:${IMAGE_TAG}"
+     stage('Install docker'){           
+         agent { label 'BackendServer'}  
+            steps{ 
+               sh "docker run -d --name ${CONTAINER_NAME} -p 8081:8081 ${IMAGE_NAME}:${IMAGE_TAG}"
             }
-         }
-         }
+        }   
     }
 }
