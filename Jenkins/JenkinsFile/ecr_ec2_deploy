@@ -7,7 +7,7 @@ pipeline{
         IMAGE_NAME="############"
         IMAGE_TAG="${currentBuild.number}"
         CONTAINER_NAME="############"
-        REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_NAME}":${IMAGE_TAG}"
+        REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_NAME}:${IMAGE_TAG}"
     }
     
     stages {
