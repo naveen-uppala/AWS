@@ -49,7 +49,7 @@ pipeline{
      stage("Deploy application on K8's cluster"){
             steps{
                 withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'k8s_credentials', namespace: '', serverUrl: '') {
-                 sh "kustomize edit set image 703550360617.dkr.ecr.ap-south-1.amazonaws.com/batch9:latest=703550360617.dkr.ecr.ap-south-1.amazonaws.com/batch9:${currentBuild.number}"    
+                 sh "kustomize edit set image 703550360617.dkr.ecr.ap-south-1.amazonaws.com/batch9:latest=703550360617.dkr.ecr.ap-south-1.amazonaws.com/batch9:${IMAGE_TAG}"    
                  sh "kustomize build ."
                  sh "kubectl delete -f eks-deployment.yaml && kubectl create --kustomize ."   
                  }
