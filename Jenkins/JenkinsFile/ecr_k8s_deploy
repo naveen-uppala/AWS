@@ -1,7 +1,7 @@
 pipeline{
 
        agent any	
-    //agent { label '"############"'}
+    //agent { label "############"}
     
      environment {
      
@@ -16,18 +16,18 @@ pipeline{
     
     stages {
         
-        stage("cloning git repository"){
+        stage("Cloning git repository"){
             steps{
-                git branch: 'develop', credentialsId: 'git_credentials', url: 'https://github.com/Uppala-Naveen-Goud/Backend.git'
+                git branch: '############', credentialsId: 'git_credentials', url: '############'
             }
         }    
-        stage("build"){
+        stage("Build jar file using maven"){
             steps{
                sh "mvn clean install"
             }    
         }
         
-        stage('Building image') {
+        stage("Build docker image") {
             steps{
                 script {
                     dockerImage = docker.build "${IMAGE_NAME}:${IMAGE_TAG}"
@@ -36,7 +36,7 @@ pipeline{
         }
    
     // Uploading Docker images into AWS ECR
-    stage('Logging into AWS ECR and Push docker image') {
+    stage("Logging into AWS ECR and push docker image") {
      steps{  
          script {
                 sh "aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
@@ -46,7 +46,7 @@ pipeline{
         }
      }  
      
-     stage('Deploy application on K8's cluster'){
+     stage("Deploy application on K8's cluster"){
             steps{
                 withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'k8s_credentials', namespace: '', serverUrl: '') {
                  sh "kustomize edit set image 703550360617.dkr.ecr.ap-south-1.amazonaws.com/batch9:latest=703550360617.dkr.ecr.ap-south-1.amazonaws.com/batch9:${currentBuild.number}"    
@@ -57,4 +57,4 @@ pipeline{
         }
     }
     
-}    
+}  
