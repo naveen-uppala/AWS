@@ -12,23 +12,13 @@ pipeline{
     
     stages {
         
-         stage('Logging into AWS ECR') {
-            steps {
-                script {
-                    sh "aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
-                }
-                 
-            }
-        }
-        
-        
         stage("cloning git repository"){
             steps{
                 git branch: '######', credentialsId: 'git_credentials', url: '####################'
             }
         } 
         
-        stage("build"){
+        stage("Build jar file using maven"){
             steps{
                sh "mvn clean install"
             }    
@@ -43,16 +33,17 @@ pipeline{
         }
    
     // Uploading Docker images into AWS ECR
-    stage('Pushing to ECR') {
+    stage('Logging into AWS ECR & Push docker image to ECR') {
      steps{  
          script {
+                sh "aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"     
                 sh "docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}"
                 sh "docker push ${REPOSITORY_URI}"
             }
         }
      } 
      
-     stage('Pull the latest docker image from repository ') {
+     stage('Pull the latest docker image from ECR repository ') {
         agent { label 'BackendServer'} 
            steps{  
              catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE'){
