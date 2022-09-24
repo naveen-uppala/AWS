@@ -5,29 +5,20 @@ pipeline{
     
      environment {
      
-        AWS_ACCOUNT_ID="############"
-        AWS_DEFAULT_REGION="############"
-        IMAGE_REPO_NAME="############"
-        IMAGE_TAG="############"
-        REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
+        AWS_ACCOUNT_ID="703550360617"
+        AWS_DEFAULT_REGION="ap-south-1"
+        IMAGE_NAME="batch9"
+        IMAGE_TAG="${currentBuild.number}"
+        //IMAGE_TAG="staticvalue"
+        REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_NAME}:${IMAGE_TAG}"
         
                 }
     
     stages {
         
-         stage('Logging into AWS ECR') {
-            steps {
-                script {
-                    sh "aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
-                }
-                 
-            }
-        }
-        
-        
         stage("cloning git repository"){
             steps{
-                git branch: '"############"', credentialsId: 'git_credentials', url: '"############"'
+                git branch: 'develop', credentialsId: 'git_credentials', url: 'https://github.com/Uppala-Naveen-Goud/Backend.git'
             }
         }    
         stage("build"){
@@ -39,25 +30,29 @@ pipeline{
         stage('Building image') {
             steps{
                 script {
-                    dockerImage = docker.build "${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+                    dockerImage = docker.build "${IMAGE_NAME}:${IMAGE_TAG}"
                 }
             }
         }
    
     // Uploading Docker images into AWS ECR
-    stage('Pushing to ECR') {
+    stage('Logging into AWS ECR and Push docker image') {
      steps{  
          script {
-                sh "docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:$IMAGE_TAG"
-                sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+                sh "aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
+                sh "docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}"
+                sh "docker push ${REPOSITORY_URI}"
             }
         }
      }  
      
-     stage('K8S deploy'){
+     stage('Deploy application on K8's cluster'){
             steps{
-                withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'K8S', namespace: '', serverUrl: '') {
-                 sh "/home/jenkins-slave1/bin/kubectl apply -f eks-deploy-k8s.yaml"}
+                withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'k8s_credentials', namespace: '', serverUrl: '') {
+                 sh "kustomize edit set image 703550360617.dkr.ecr.ap-south-1.amazonaws.com/batch9:latest=703550360617.dkr.ecr.ap-south-1.amazonaws.com/batch9:${currentBuild.number}"    
+                 sh "kustomize build ."
+                 sh "kubectl delete -f eks-deployment.yaml && kubectl create --kustomize ."   
+                 }
             }
         }
     }
