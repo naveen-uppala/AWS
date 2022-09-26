@@ -1,0 +1,9 @@
+#####################ELASTIC KUBERNETES SERVICE CLUSTER CREATION#########################
+
+1) Create IAM role with "AmazonEKSClusterPolicy" policy for creating kubernetes cluster.
+
+2) Create the kubernetes cluster in the eks dashboard with IAM role that we have created.
+
+3) Create IAM role with 3 policies(AmazonEKSWorkerNodePolicy, AmazonEC2ContainerRegistryReadOnly and AmazonEKS_CNI_Policy) for creating the kubernetes NodeGroup.
+
+4) Open the created cluster and navigate to compute tab and create Node group using the IAM role that we have created.
