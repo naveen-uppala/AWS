@@ -1,0 +1,50 @@
+#####################Configure EKS cluster with Jenkins Master and Slave Node#########################
+
+1) Login to the Jenkins Master node and install Kubernetes CLI plugin from manage plugins section.
+
+2) SSH to jenkins slave node and login as jenkins-slave1 user.(sudo su - jenkins-slave1)
+
+3) Install kubectl CLI on slave node:
+
+    Run the below commands to install kubectl:
+ 
+
+i) curl -o kubectl https://s3.us-west-2.amazonaws.com/amazon-eks/1.23.7/2022-06-29/bin/linux/amd64/kubectl
+
+ii) chmod +x ./kubectl
+
+iii) mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
+
+iv) echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
+
+v) kubectl version --short --client
+
+
+4) Install Kustomize CLI on slave node:
+
+i) curl --silent --location --remote-name \
+  "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/v3.2.3/kustomize_kustomize.v3.2.3_linux_amd64" && \
+  chmod a+x kustomize_kustomize.v3.2.3_linux_amd64 && \
+  sudo mv kustomize_kustomize.v3.2.3_linux_amd64 /usr/local/bin/kustomize
+
+ii) kustomize version
+
+5) Configure aws credentials with  "aws configure" command. (prerequisite: you need to create access key id and secrete access token in IAM dashboard).
+
+6) check cluster information using:
+
+     i) aws eks list-clusters
+ 
+     ii) aws eks describe-cluster --name cluster-name.  (Note: replace cluster-name with your cluster name that you have created.)
+
+7) aws eks update-kubeconfig --name cluster-name  --region region. (Note: replace cluster-name with your cluster name that you have created and region with your region code ex: ap-south-1)
+
+8) Copy the info in kubeconfig file and paste it inseparate notepad.
+
+     i) echo "$HOME/.kube/config"
+
+     ii) sudo cat /home/jenkins-slave1/.kube/config
+
+9) Go to jenkins master node and add credentials for our kubernetes cluster
+
+  i) Click on dashboard --> Manage jenkins --> manage credentials --> Select kind as Secret file.
