@@ -1,13 +1,13 @@
 pipeline{
 
-       agent any	
-    //agent { label "############"}
+      // agent any	
+    agent { label "#####"}
     
      environment {
      
-        AWS_ACCOUNT_ID="703550360617"
-        AWS_DEFAULT_REGION="ap-south-1"
-        IMAGE_NAME="batch9"
+        AWS_ACCOUNT_ID="######"
+        AWS_DEFAULT_REGION="#####"
+        IMAGE_NAME="######"
         IMAGE_TAG="${currentBuild.number}"
         //IMAGE_TAG="staticvalue"
         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_NAME}:${IMAGE_TAG}"
@@ -18,7 +18,7 @@ pipeline{
         
         stage("Cloning git repository"){
             steps{
-                git branch: '############', credentialsId: 'git_credentials', url: '############'
+                git branch: '#######', credentialsId: 'git_credentials', url: '############'
             }
         }    
         stage("Build jar file using maven"){
@@ -46,7 +46,15 @@ pipeline{
         }
      }  
      
-     stage("Deploy application on K8's cluster"){
+     stage("Deploy application on K8's cluster") {
+     steps{  
+         script {
+                sh "kubectl apply -f eks-deployment.yaml"
+            }
+        }
+     }  
+     
+     stage("Re-deploy application on K8's cluster with new code changes"){
             steps{
                 withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'k8s_credentials', namespace: '', serverUrl: '') {
                  sh "kustomize edit set image 703550360617.dkr.ecr.ap-south-1.amazonaws.com/batch9:latest=703550360617.dkr.ecr.ap-south-1.amazonaws.com/batch9:${IMAGE_TAG}"    
