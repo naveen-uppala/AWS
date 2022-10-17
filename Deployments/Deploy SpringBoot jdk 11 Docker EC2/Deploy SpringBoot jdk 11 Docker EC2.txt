@@ -54,4 +54,8 @@
 
 
 ########################## STOP JAVA APPLICATION ###################
-1) curl -X POST localhost:8081/actuator/shutdown  ( To stop running spring boot application)
+1) docker stop container_name  ( To stop running spring boot application)
+
+##########################Export Logs to CloudWatch #######################
+
+1) sudo docker run -d --name container_name --log-driver=awslogs --log-opt awslogs-region=ap-south-1 --log-opt awslogs-group=LogGroupName --log-opt awslogs-create-group=true -p 8081:8081 image_name
