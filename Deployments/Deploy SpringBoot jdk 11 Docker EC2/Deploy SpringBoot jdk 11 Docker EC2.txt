@@ -60,6 +60,6 @@
 
 1) docker run \
     --log-driver=awslogs \
-    --log-opt awslogs-region=us-east-1 \
-    --log-opt awslogs-group=myLogGroup \
+    --log-opt awslogs-region=ap-south-1 \
+    --log-opt awslogs-group=LogGroup_Name \
     --log-opt awslogs-create-group=true
