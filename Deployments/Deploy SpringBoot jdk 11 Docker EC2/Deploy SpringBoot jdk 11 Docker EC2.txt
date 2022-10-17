@@ -58,8 +58,4 @@
 
 ##########################Export Logs to CloudWatch #######################
 
-1) docker run \
-    --log-driver=awslogs \
-    --log-opt awslogs-region=ap-south-1 \
-    --log-opt awslogs-group=LogGroup_Name \
-    --log-opt awslogs-create-group=true
+1) docker run  -d --name container_name   --log-driver=awslogs  --log-opt awslogs-region=ap-south-1  --log-opt awslogs-group=Backend  --log-opt awslogs-create-group=true -p 8081:8081 image_name
