@@ -1,0 +1,50 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Deploy a simple Amazon Linux Instance and allow SSH connectivity.
+Parameters:
+  # KeyName:
+  #   Description: EC2 Key Pair for SSH Access, you must have created these prior to
+  #     running this.
+  #   Type: AWS::EC2::KeyPair::KeyName
+  VpcId:
+    Description: 'VPC for creating instance using CFT'
+    Type: AWS::EC2::VPC::Id
+    Default: vpc-03ac47ba19f34708e
+
+  ImageId:
+    Description: 'Using Amazon Linux Image for creating this Instance'
+    Type: String
+    Default: ami-0e6329e222e662a52
+
+  SubnetId:
+    Description: 'Giving the public-subnet1 for this instance'
+    Type: AWS::EC2::Subnet::Id
+    Default: subnet-023cee6cccf4a2a42
+
+Resources:
+  SimpleInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      # KeyName:
+      #   Ref: KeyName
+      ImageId:
+        Ref: ImageId
+      InstanceType: t2.micro  
+      NetworkInterfaces:
+      - GroupSet:
+        - Ref: SimpleInstanceSg
+        SubnetId: 
+          Ref: SubnetId
+        AssociatePublicIpAddress: true
+        DeviceIndex: '0'
+        DeleteOnTermination: true
+  SimpleInstanceSg:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Creating SecurityGroup for this Ec2 Instance with port 22
+      VpcId:
+        Ref: VpcId
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 22
+        ToPort: 22
+        CidrIp: 0.0.0.0/0      
