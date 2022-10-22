@@ -53,9 +53,9 @@ sudo amazon-linux-extras install java-openjdk11 -y
 
 2) passwd jenkins-slave1 # set password for user jenkins-slave1
 
-3)sudo vi /etc/sudoers  
+3) sudo vi /etc/sudoers  
 
-4)jenkins ALL=(ALL) NOPASSWD: ALL
+4) jenkins-slave1 ALL=(ALL) NOPASSWD: ALL
 
 5) sudo su - jenkins-slave1
 
