@@ -53,15 +53,19 @@ sudo amazon-linux-extras install java-openjdk11 -y
 
 2) passwd jenkins-slave1 # set password for user jenkins-slave1
 
-3) sudo su - jenkins-slave1
+3)sudo vi /etc/sudoers  
 
-4) ssh-keygen -t rsa -N "" -f /home/jenkins-slave1/.ssh/id_rsa
+4)jenkins ALL=(ALL) NOPASSWD: ALL
 
-5) cd .ssh
+5) sudo su - jenkins-slave1
 
-6) cat id_rsa.pub > authorized_keys
+6) ssh-keygen -t rsa -N "" -f /home/jenkins-slave1/.ssh/id_rsa
 
-7) chmod 700 authorized_keys
+7) cd .ssh
+
+8) cat id_rsa.pub > authorized_keys
+
+9) chmod 700 authorized_keys
 
 
 ===============Configure Jenkins Master with Slave Node =======================
