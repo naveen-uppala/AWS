@@ -1,0 +1,7 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create Elastic IP  for EC2 instance.
+Resources:
+ NAVEEN:
+    Type: AWS::EC2::EIP
+    # Properties:
+    #   Domain: vpc
