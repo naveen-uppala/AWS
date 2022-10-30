@@ -78,7 +78,7 @@ Note:Execute the below commands on Master Node
 
 3) sudo chmod 777 .ssh
 
-3) sudo ssh-keyscan -H  private-ipaddress-slave-node >>/var/lib/jenkins/.ssh/known_hosts
+4) sudo ssh-keyscan -H  private-ipaddress-slave-node >>/var/lib/jenkins/.ssh/known_hosts
 
 5) cd .ssh
 
