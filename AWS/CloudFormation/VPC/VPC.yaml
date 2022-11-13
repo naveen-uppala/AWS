@@ -1,0 +1,151 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: To create a VPC with two public subnets and two private subnets in two Availability Zones, 
+ together with a NAT Gateway and associated routing.
+
+Resources:
+#Create VPC with 65536 Hosts
+  NaveenVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 192.168.0.0/16
+      Tags:
+        - Key: "Name"
+          Value: "NaveenVPC"
+
+# Create InternetGateway and attach it to VPC      
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:     
+      Tags:
+        - Key: "Name"
+          Value: "NaveenIG"
+
+  AttachIGtoVPC:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref  NaveenVPC
+      InternetGatewayId: !Ref InternetGateway
+
+# Creating 2 Public Subnets
+
+  PublicSubnet1:
+        Type: AWS::EC2::Subnet
+        Properties:
+          VpcId: !Ref NaveenVPC
+          AvailabilityZone: ap-south-1a
+          CidrBlock: 192.168.0.0/20
+          MapPublicIpOnLaunch: true
+          Tags:
+          - Key: "Name"
+            Value: "PublicSubnet1"
+     
+  PublicSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref NaveenVPC
+      AvailabilityZone: ap-south-1b
+      CidrBlock: 192.168.16.0/20
+      MapPublicIpOnLaunch: true
+      Tags:
+          - Key: "Name"
+            Value: "PublicSubnet2"
+
+  PrivateSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref NaveenVPC
+      AvailabilityZone: ap-south-1a
+      CidrBlock: 192.168.32.0/20
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: "Name"
+          Value: "PrivateSubnet1"
+
+     
+  PrivateSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref NaveenVPC
+      AvailabilityZone: ap-south-1b
+      CidrBlock: 192.168.48.0/20
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: "Name"
+          Value: "PrivateSubnet2"          
+
+  PublicRouteTable:
+        Type: AWS::EC2::RouteTable
+        Properties:
+          VpcId: !Ref NaveenVPC
+          Tags:
+            - Key: "Name"
+              Value: "PublicRouteTable"
+      
+  PublicRoute:
+    Type: AWS::EC2::Route
+    DependsOn: InternetGateway
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+     
+  PublicSubnet1RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet1
+      RouteTableId: !Ref PublicRouteTable 
+
+  PublicSubnet2RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet2
+      RouteTableId: !Ref PublicRouteTable  
+
+# Create ELASTIC IP
+  NatPublicIP:
+    Type: AWS::EC2::EIP
+    DependsOn: NaveenVPC
+    Properties:
+      Domain: vpc
+      Tags:
+        - Key: "Name"
+          Value: "NatPublicIP"   
+
+# Create  NAT GATEWAY
+  NatGateway:
+    Type: AWS::EC2::NatGateway
+    DependsOn: NatPublicIP
+    Properties: 
+      SubnetId: !Ref PublicSubnet1
+      AllocationId: !GetAtt NatPublicIP.AllocationId
+      Tags:
+        - Key: "Name"
+          Value: "NaveenNatGateway" 
+
+  ## PRIVATE ROUTING
+  PrivateRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref NaveenVPC
+      Tags:
+        - Key: "Name"
+          Value: "PrivateRouteTable"
+  
+  PrivateRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      NatGatewayId: !Ref NatGateway
+      RouteTableId: !Ref PrivateRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+  
+  PrivateSubnet1RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet1
+      RouteTableId: !Ref PrivateRouteTable
+  
+  PrivateSubnet2RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet2
+      RouteTableId: !Ref PrivateRouteTable
