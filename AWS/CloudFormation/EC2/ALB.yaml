@@ -1,0 +1,47 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Create Application LoadBalancer.
+Parameters:
+   InstanceId:
+      Description: Defining the EC2 instances for TargetGroup
+      Type: String
+      Default: i-0a2efed3dad2fa211
+Resources:
+   ELB:
+      Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+      Properties:
+         IpAddressType: ipv4
+         Name: Naveen-ELB
+         Scheme: internet-facing
+         SecurityGroups:
+            - sg-0aa151abf089db0ec
+         Subnets:
+            - subnet-0a25e6659a060e6aa
+            - subnet-001b1b0e30abfd88c
+         Tags:
+            - Key: "Name"
+              Value: "Naveen-ELB"
+         Type: application
+   ListnerPort:
+      Type: AWS::ElasticLoadBalancingV2::Listener
+      Properties:
+         DefaultActions:
+            - Type: forward
+              TargetGroupArn:
+                  Ref: TG1      
+         LoadBalancerArn:
+            Ref: ELB
+         Port: 80
+         Protocol: HTTP
+
+   TG1:
+      Type: AWS::ElasticLoadBalancingV2::TargetGroup
+      Properties:
+         Name: Target-1
+         Port: 80
+         Protocol: HTTP
+         VpcId: vpc-060b3ef7aa90cbb16
+         TargetType: instance
+         Targets:
+            - Id:
+               Ref: InstanceId
+         

@@ -1,0 +1,13 @@
+# creating a EBS for an instance
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Creating a EBS volume with 10 GB storage
+Resources:
+  MyEBS:
+    Type: AWS::EC2::Volume
+    Properties:
+      AvailabilityZone: ap-south-1a
+      Size: 2
+      VolumeType: gp3
+      Tags:
+        - Key: "Name"
+          Value: "Naveen"

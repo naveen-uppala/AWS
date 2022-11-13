@@ -1,0 +1,13 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Creating Launch Template.
+Resources:
+  MyLaunchTemplate:
+    Type: AWS::EC2::LaunchTemplate
+    Properties:
+      LaunchTemplateName: MyLaunchTemplate
+      LaunchTemplateData:
+        ImageId: ami-0e6329e222e662a52
+        InstanceType: t2.micro
+        KeyName: batch10
+        SecurityGroupIds:
+          - sg-02e08807b7360b7d6
