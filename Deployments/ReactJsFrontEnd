@@ -20,37 +20,28 @@ Steps to Deploy React js application in ubuntu Instance using Nginx
 6.sudo git clone (paste the url of frontend repo)
 
 
-7.ls
+7.sudo rm index.nginx-debian.html
 
 
-8.sudo rm index.nginx-debian.html
+8.cd frontend (enter into repo)
 
 
-9.cd frontend (enter into repo)
+9.sudo npm install
 
 
-10.sudo npm install
+10.sudo npm run build
 
 
-11.sudo npm run build
+11.sudo cp -r build /var/www/html (copy the build file to /var/www/html)
 
 
-12.sudo cp -r build /var/www/html (copy the build file to /var/www/html)
+12.cd ..
 
 
-13.cd ../../
+13.sudo mv build/* .
 
 
-14.sudo mv build/* .
+14.There we can see files . so we can check with ip address only dont keep any port number end of the ip.
 
 
-15.ls
-
-
-16.There we can see files . so we can check with ip address only dont keep any port number end of the ip.
-
-
-17.SG ports:     ssh:22 , React js :3000,  Http:80
-
-
-18. Now we can see the frontend application Running successfully.
+15.SG ports:     ssh:22 , React js :3000,  Http:80
