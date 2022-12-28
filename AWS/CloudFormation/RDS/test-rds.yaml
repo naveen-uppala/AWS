@@ -1,10 +1,10 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: 'AWS CloudFormation sample template to creates an Amazon Relational Database Service database
+Description: 'AWS CloudFormation sample template to create an Amazon MYSQL RDS database
   instance.'
 Parameters:
   DBName:
     Default: MyDatabase
-    Description: The database name
+    Description: Name of Mysql database
     Type: String
     MinLength: '1'
     MaxLength: '64'
@@ -12,14 +12,14 @@ Parameters:
     ConstraintDescription: must begin with a letter and contain only alphanumeric
       characters.
   DBUser:
-    NoEcho: 'true'
+    NoEcho: 'false'
     Description: The database admin account username
     Type: String
     MinLength: '1'
     MaxLength: '16'
     AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
     ConstraintDescription: must begin with a letter and contain only alphanumeric
-      characters.
+      characters. 
   DBPassword:
     NoEcho: 'true'
     Description: The database admin account password
@@ -29,7 +29,7 @@ Parameters:
     AllowedPattern: '[a-zA-Z0-9]+'
     ConstraintDescription: must contain only alphanumeric characters.
   DBAllocatedStorage:
-    Default: '5'
+    Default: '20'
     Description: The size of the database (Gb)
     Type: Number
     MinValue: '5'
@@ -47,18 +47,19 @@ Parameters:
     Type: String
     Default: 'false'
     AllowedValues: ['true', 'false']
-    ConstraintDescription: must be true or false.
+    ConstraintDescription: must be true or false.            
+
 Resources:
   DBSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupDescription: Creating SecurityGroup for this Ec2 Instance with port 22
+      GroupDescription: Creating SecurityGroup for this Ec2 Instance with port 3306
       VpcId: vpc-03ac47ba19f34708e
       SecurityGroupIngress:
       - IpProtocol: tcp
         FromPort: 3306
         ToPort: 3306
-        CidrIp: 0.0.0.0/0   
+        CidrIp: 0.0.0.0/0
 
   DBSubnets:
     Type: AWS::RDS::DBSubnetGroup
@@ -68,7 +69,7 @@ Resources:
       SubnetIds: 
         - subnet-0bd6d9f645876bbb9
         - subnet-023cee6cccf4a2a42
-      
+
   MasterDB:
     Type: AWS::RDS::DBInstance
     Properties:
@@ -84,8 +85,10 @@ Resources:
         Value: Master Database
       VPCSecurityGroups: 
         - Ref: DBSecurityGroup
-      DBSubnetGroupName: !Ref 'DBSubnets'  
-    # DeletionPolicy: Snapshot
+      DBSubnetGroupName: !Ref DBSubnets
+      PubliclyAccessible: true
+      StorageType: gp3
+
 Outputs:
   MasterJDBCConnectionString:
     Description: JDBC connection string for the master database
