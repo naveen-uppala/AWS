@@ -1,0 +1,22 @@
+Step 1: Create Key Pair
+$ aws ec2 create-key-pair --key-name Demo
+
+Step 2: Create a security group
+$ aws ec2 create-security-group --group-name Demosg --description "This is AWS SG"
+
+Authorize the security group with the inbound rule
+$ aws ec2 authorize-security-group-ingress --group-name Demosg --protocol all --cidr 0.0.0.0/0
+
+Step 3: Launch an instance using the above created key pair and security group
+ Image name: Amazon Linux AMI
+ Instance Type: t2.micro
+ Count:1
+ Subnet id:
+ Tags:Names:
+ Security group:
+ Key name:
+
+$ aws ec2 run-instances --image-id ami-0cca134ec43cf708f --instance-type t2.micro --count 1 --
+subnet-id subnet-03c9148740ed7678f --tag-specifications 
+'ResourceType=instance,Tags=[{Key=Name,Value=CLI-1}]' --security-group-ids sg-
+0730e6d0de463cd78 --key-name Demo
