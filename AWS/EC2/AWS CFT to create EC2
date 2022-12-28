@@ -6,34 +6,34 @@ Parameters:
       running this.
     Type: AWS::EC2::KeyPair::KeyName
     Default: batch11_keypair
-  Batch11VpcId:
+  TheCloudNationVpcId:
     Description: 'VPC for creating instance using CFT'
     # Type: AWS::EC2::VPC::Id
     Type: String
     Default: vpc-0b2075324eb857dc6
 
-  AmiId:
+  TheCloudNationAmiId:
     Description: 'Using Amazon Linux Image for creating this Instance'
     Type: String
     Default: ami-03b644b4d078605bd
 
-  InstanceType:
+  TheCloudNationInstanceType:
     Description: 'Instance type configuration'
     Type: String
     Default: t3.micro
 
-  SubnetId:
+  TheCloudNationSubnetId:
     Description: 'Giving the public-subnet1 for this instance'
     # Type: AWS::EC2::Subnet::Id
     Type: String
     Default: subnet-0b9da844dd4ec1329    
 
 Resources:
-  Batch11SecurityGroup:
+  TheCloudNationSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties: 
       GroupDescription: Batch11 Security Group for test purpose
-      GroupName: Batch11
+      GroupName: TheCloudNationSecurityGroup
       SecurityGroupIngress: 
         # - IpProtocol: tcp
         #   FromPort: 22
@@ -45,33 +45,30 @@ Resources:
           CidrIp: 49.37.133.176/32       
       Tags: 
         - Key: "Name"
-          Value: "Batch11"
-      VpcId: !Ref Batch11VpcId
+          Value: "TheCloudNationSecurityGroup"
+      VpcId: !Ref TheCloudNationVpcId
 
-  Batch11Instance:
+  TheCloudNationInstance:
     Type: AWS::EC2::Instance
     Properties:
       KeyName: !Ref KeyPairName
       ImageId: !Ref AmiId
       InstanceType: !Ref InstanceType
       SecurityGroupIds:
-        - !Ref Batch11SecurityGroup
+        - !Ref TheCloudNationSecurityGroup
       Tags:
         - Key: "Name"
-          Value: "Naveen Instance"    
+          Value: "TheCloudNation Instance"    
 
-  Batch11EIP:
+  TheCloudNationEIP:
     Type: AWS::EC2::EIP
     Properties: 
       Tags: 
         - Key: "Name"
-          Value: "Batch11 EIP"  
+          Value: "TheCloudNation EIP"  
 
-  EipAssociate:
+  TheCloudNationEipAssociate:
     Type: AWS::EC2::EIPAssociation
     Properties: 
-        EIP: !Ref Batch11EIP
-        InstanceId: !Ref Batch11Instance
-          
-
-
+        EIP: !Ref TheCloudNationEIP
+        InstanceId: !Ref TheCloudNationInstance
