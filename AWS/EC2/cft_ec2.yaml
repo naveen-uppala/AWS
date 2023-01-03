@@ -60,15 +60,15 @@ Resources:
         - Key: "Name"
           Value: "TheCloudNation Instance"    
 
-  TheCloudNationEIP:
-    Type: AWS::EC2::EIP
-    Properties: 
-      Tags: 
-        - Key: "Name"
-          Value: "TheCloudNation EIP"  
+#   TheCloudNationEIP:
+#     Type: AWS::EC2::EIP
+#     Properties: 
+#       Tags: 
+#         - Key: "Name"
+#           Value: "TheCloudNation EIP"  
 
-  TheCloudNationEipAssociate:
-    Type: AWS::EC2::EIPAssociation
-    Properties: 
-        EIP: !Ref TheCloudNationEIP
-        InstanceId: !Ref TheCloudNationInstance
+#   TheCloudNationEipAssociate:
+#     Type: AWS::EC2::EIPAssociation
+#     Properties: 
+#         EIP: !Ref TheCloudNationEIP
+#         InstanceId: !Ref TheCloudNationInstance

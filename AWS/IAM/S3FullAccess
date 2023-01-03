@@ -1,8 +1,9 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Resources:
-  IamRoleS3fullaccess:
+  TCNS3FullAccessRole:
     Type: 'AWS::IAM::Role'
     Properties:
+      RoleName: TCNS3FullAccessRole
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
@@ -10,6 +11,7 @@ Resources:
             Principal:
               Service:
                 - ec2.amazonaws.com
+                - lambda.amazonaws.com
             Action:
               - 'sts:AssumeRole'
       Path: /
@@ -24,6 +26,7 @@ Resources:
   RootInstanceProfile:
     Type: 'AWS::IAM::InstanceProfile'
     Properties:
+      InstanceProfileName: TCNS3InstanceProfile
       Path: /
       Roles:
-        - !Ref IamRoleS3fullaccess
+        - !Ref TCNS3FullAccessRole

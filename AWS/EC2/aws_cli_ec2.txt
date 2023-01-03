@@ -1,11 +1,11 @@
 Step 1: Create Key Pair
-$ aws ec2 create-key-pair --key-name Demo
+$ aws ec2 create-key-pair --key-name TheCloudNation
 
 Step 2: Create a security group
-$ aws ec2 create-security-group --group-name Demosg --description "This is AWS SG"
+$ aws ec2 create-security-group --group-name TheCloudNationSecurityGroup --description "Security group for EC2 instance"
 
 Authorize the security group with the inbound rule
-$ aws ec2 authorize-security-group-ingress --group-name Demosg --protocol all --cidr 0.0.0.0/0
+$ aws ec2 authorize-security-group-ingress --group-name TheCloudNationSecurityGroup --protocol all --cidr 0.0.0.0/0
 
 Step 3: Launch an instance using the above created key pair and security group
  Image name: Amazon Linux AMI
