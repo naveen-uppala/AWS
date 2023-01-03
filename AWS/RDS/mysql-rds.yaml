@@ -1,10 +1,10 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: 'AWS CloudFormation sample template to creates an Amazon Relational Database Service database
+Description: 'AWS CloudFormation sample template to creates an Amazon MYSQL RDS database
   instance.'
 Parameters:
   DBName:
-    Default: MyDatabase
-    Description: The database name
+    Default: Batch11
+    Description: The MYSQL RDS database name
     Type: String
     MinLength: '1'
     MaxLength: '64'
@@ -38,8 +38,8 @@ Parameters:
   DBInstanceClass:
     Description: The database instance type
     Type: String
-    Default: db.t2.small
-    AllowedValues: [db.t1.micro, db.t2.micro, db.t2.small, db.t2.medium,
+    Default: db.t3.micro
+    AllowedValues: [db.t1.micro, db.t3.micro, db.t2.small, db.t2.medium,
       db.t2.large]
     ConstraintDescription: must select a valid database instance type.
   MultiAZ:
@@ -48,43 +48,49 @@ Parameters:
     Default: 'false'
     AllowedValues: ['true', 'false']
     ConstraintDescription: must be true or false.
+  VpcId:
+    Default: vpc-0b2075324eb857dc6
+    Type: String  
+    Description: VPC for creating the MYSQL RDS
 Resources:
   DBSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
+      GroupName: MYSQL RDS SG
       GroupDescription: Creating SecurityGroup for this Ec2 Instance with port 22
-      VpcId: vpc-03ac47ba19f34708e
+      VpcId: !Ref VpcId
       SecurityGroupIngress:
       - IpProtocol: tcp
         FromPort: 3306
         ToPort: 3306
-        CidrIp: 0.0.0.0/0   
+        CidrIp: 0.0.0.0/0         
 
   DBSubnets:
     Type: AWS::RDS::DBSubnetGroup
     Properties: 
-      DBSubnetGroupDescription: Subnets
-      DBSubnetGroupName: DBSubnets
+      DBSubnetGroupDescription: Defining the subnets for creating MYSQL RDS
+      DBSubnetGroupName: MYSQL RDS Subnet
       SubnetIds: 
-        - subnet-0bd6d9f645876bbb9
-        - subnet-023cee6cccf4a2a42
+        - subnet-04a17d3e3a3118124
+        - subnet-0b9da844dd4ec1329
+        - subnet-0b3234069a95dd205
       
   MasterDB:
     Type: AWS::RDS::DBInstance
     Properties:
-      DBName: !Ref 'DBName'
-      AllocatedStorage: !Ref 'DBAllocatedStorage'
-      DBInstanceClass: !Ref 'DBInstanceClass'
+      DBName: !Ref DBName
+      AllocatedStorage: !Ref DBAllocatedStorage
+      DBInstanceClass: !Ref DBInstanceClass
       Engine: MySQL
-      MasterUsername: !Ref 'DBUser'
-      MasterUserPassword: !Ref 'DBPassword'
-      MultiAZ: !Ref 'MultiAZ'
+      MasterUsername: !Ref DBUser
+      MasterUserPassword: !Ref DBPassword
+      MultiAZ: !Ref MultiAZ
       Tags:
       - Key: Name
         Value: Master Database
       VPCSecurityGroups: 
         - Ref: DBSecurityGroup
-      DBSubnetGroupName: !Ref 'DBSubnets'  
+      DBSubnetGroupName: !Ref DBSubnets 
     # DeletionPolicy: Snapshot
 Outputs:
   MasterJDBCConnectionString:

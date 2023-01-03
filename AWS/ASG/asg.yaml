@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Create launch template and Autoscaling Group.
+
+Parameters:
+  LaunchTemplateVersionNumber:
+    Default: 1
+    Type: String
+  AmiId:
+    Type: String
+    Default: ami-03b644b4d078605bd
+
+Resources:
+  MyLaunchTemplate:
+    Type: AWS::EC2::LaunchTemplate
+    Properties:
+      LaunchTemplateName: Template-1
+      LaunchTemplateData:
+        ImageId: !Ref AmiId
+        InstanceType: t2.medium
+        KeyName: batch10
+        SecurityGroupIds:
+          - sg-0b245592151a3aa54
+
+  ASG1:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties: 
+      AutoScalingGroupName: Batch11ASG
+      VPCZoneIdentifier:
+          - subnet-0b9da844dd4ec1329
+          - subnet-04a17d3e3a3118124   
+      DesiredCapacity: 2
+      MaxSize: 3
+      MinSize: 1
+      LaunchTemplate:
+        LaunchTemplateId: !Ref MyLaunchTemplate
+        Version: !Ref LaunchTemplateVersionNumber    
+        

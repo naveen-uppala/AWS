@@ -1,0 +1,32 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Create Elastic IP  for EC2 instance.
+Resources:
+   myEC2Instance:
+     Type: AWS::EC2::Instance
+     Properties:
+       KeyName: batch10
+       ImageId: ami-0e6329e222e662a52
+       InstanceType: t2.micro
+       SubnetId: subnet-0bd6d9f645876bbb9
+       SecurityGroupIds:
+         - sg-02e08807b7360b7d6
+       Tags:
+          - Key: "Name"
+            Value: "EIP-Instance"
+   EIP1:
+      Type: AWS::EC2::EIP
+      Properties: 
+         Domain: String
+         Tags:   
+         - Key: "Name"
+           Value: "EIP2" 
+
+   EipAssociate:
+      Type: AWS::EC2::EIPAssociation
+      Properties: 
+         EIP: 
+            Ref: EIP1
+         InstanceId: 
+            Ref: myEC2Instance 
+
+           
