@@ -1,0 +1,19 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'AWS CloudFormation template to creates SSM parameters for Amazon MYSQL RDS'
+
+Parameters:
+  VpcId:
+    Default: vpc-0b2075324eb857dc6
+    Type: String  
+    Description: VPC for creating the MYSQL RDS  
+Type: AWS::SSM::Parameter
+Properties: 
+  AllowedPattern: String
+  DataType: String
+  Description: String
+  Name: String
+  Policies: String
+  Tags: Json
+  Tier: Standard
+  Type: String
+  Value: 
