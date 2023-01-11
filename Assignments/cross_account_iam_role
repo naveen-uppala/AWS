@@ -91,28 +91,26 @@ a .aws folder yet, then create the folder by running the mkdir command:
 mkdir .aws
 4. Within the .aws folder, create a file and Name the file config.
 5. In the file, enter the following text. Replace enterprofilename with the name of your
-choice. Then, replace arn:aws:iam::111111111111:role/ROLENAME with the ARN of
+choice.
+Note: Replace arn:aws:iam::111111111111:role/ROLENAME with the ARN of
 the role that you created in Account B.
+
 [profile enterprofilename]
 role_arn = arn:aws:iam::111111111111:role/ROLENAME
 credential_source = Ec2InstanceMetadata
-6.    Save the file.
+
+6. Save the file.
 Verify that the instance profile can assume the role
-To verify that your instance&#39;s role (instance profile) can assume the role in Account B, run the
+To verify that your instance's role (instance profile) can assume the role in Account B, run the
 following command while connected to the instance.
 
 $aws sts get-caller-identity --profile profilename
+
 The command returns a response similar to the following:
 "Account": "11111111111",
 "UserId": "AROAEXAMPLEID:sessionName",
 "Arn": "arn:aws:sts::111111111111:assumed-role/ROLENAME/sessionName"
-Confirm that the value for "Arn" matches the ARN of the role that you created in Account
-B.
-To Create EBS volume use the following command
-aws ec2 create-volume \
---volume-type gp2 \
---size 1 \
---availability-zone ap-south-1a \
+Confirm that the value for "Arn" matches the ARN of the role that you created in Account B.
 
---region ap-south-1
---profile profilename
+To Create EBS volume use the following command
+aws ec2 create-volume --volume-type gp2 --size 1 --availability-zone ap-south-1a --region ap-south-1 --profile profilename
