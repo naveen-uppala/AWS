@@ -59,7 +59,7 @@ sudo amazon-linux-extras install java-openjdk11 -y
 
 5) sudo su - jenkins-slave1
 
-6) ssh-keygen -t rsa -N "" -f /home/jenkins-slave1/.ssh/id_rsa
+6) ssh-keygen
 
 7) cd .ssh
 
