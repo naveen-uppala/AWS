@@ -50,6 +50,7 @@ pipeline{
      steps{  
          script {
                 sh "kubectl apply -f eks-deployment.yaml"
+                sh "kubectl apply -f eks-service.yaml"
             }
         }
      }  
