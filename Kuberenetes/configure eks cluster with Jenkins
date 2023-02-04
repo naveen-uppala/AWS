@@ -41,9 +41,7 @@ ii) kustomize version
 
 8) Copy the info in kubeconfig file and paste it inseparate notepad.
 
-     i) echo "$HOME/.kube/config"
-
-     ii) sudo cat /home/jenkins-slave1/.kube/config
+    i) sudo cat /home/jenkins-slave1/.kube/config
 
 9) Go to jenkins master node and add credentials for our kubernetes cluster
 
