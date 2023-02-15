@@ -71,3 +71,9 @@
 36) rpm -qi   -> To display installed packages along with package version and description
 
 37) rpm -e  -> Erase packages
+
+38) chown  -> To change ownership of a file or folder
+
+39) groupadd  -> To create a group
+
+40) usermod -a -G groupname username  -> To add an user to the group
