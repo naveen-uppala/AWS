@@ -94,6 +94,6 @@ Note: Connect to your slave node
 
 2) cd .ssh
 
-3) more id_rsa
+3) cat id_rsa
 
 4) Create the credentials on the Jenkins Master using this keypair and username(jenkins-slave1)
