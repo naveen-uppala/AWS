@@ -5,70 +5,79 @@ Parameters:
     Description: EC2 Key Pair for SSH Access, you must have created these prior to
       running this.
     Type: AWS::EC2::KeyPair::KeyName
-    Default: batch11_keypair
+    Default: batch12
   TheCloudNationVpcId:
     Description: 'VPC for creating instance using CFT'
     # Type: AWS::EC2::VPC::Id
     Type: String
-    Default: vpc-0b2075324eb857dc6
-
+    Default: vpc-0ae395ad9b4be7977
   TheCloudNationAmiId:
     Description: 'Using Amazon Linux Image for creating this Instance'
     Type: String
-    Default: ami-03b644b4d078605bd
-
+    Default: ami-0533def491c57d991
   TheCloudNationInstanceType:
     Description: 'Instance type configuration'
     Type: String
-    Default: t3.micro
-
+    Default: t2.micro
   TheCloudNationSubnetId:
     Description: 'Giving the public-subnet1 for this instance'
     # Type: AWS::EC2::Subnet::Id
     Type: String
-    Default: subnet-0b9da844dd4ec1329    
+    Default: subnet-0c094f6ba82d61b77    
 
 Resources:
   TheCloudNationSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties: 
-      GroupDescription: Batch11 Security Group for test purpose
-      GroupName: TheCloudNationSecurityGroup
+      GroupDescription: Creating a SecurityGroup for EC2 instance
+      GroupName: Batch12
       SecurityGroupIngress: 
-        # - IpProtocol: tcp
-        #   FromPort: 22
-        #   ToPort: 22
-        #   CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
         - IpProtocol: tcp
           FromPort: 80
           ToPort: 80
-          CidrIp: 49.37.133.176/32       
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0   
+        - IpProtocol: tcp
+          FromPort: 8080
+          ToPort: 8080
+          CidrIp: 0.0.0.0/0                                 
       Tags: 
-        - Key: "Name"
-          Value: "TheCloudNationSecurityGroup"
+      - Key: "Name"
+        Value: "TheCloudNationSecurityGroup"
       VpcId: !Ref TheCloudNationVpcId
+
 
   TheCloudNationInstance:
     Type: AWS::EC2::Instance
     Properties:
       KeyName: !Ref KeyPairName
-      ImageId: !Ref AmiId
-      InstanceType: !Ref InstanceType
+      ImageId: !Ref TheCloudNationAmiId
+      InstanceType: !Ref TheCloudNationInstanceType
       SecurityGroupIds:
+        - sg-03336a5464997dd47
         - !Ref TheCloudNationSecurityGroup
+        
+
       Tags:
         - Key: "Name"
           Value: "TheCloudNation Instance"    
 
-#   TheCloudNationEIP:
-#     Type: AWS::EC2::EIP
-#     Properties: 
-#       Tags: 
-#         - Key: "Name"
-#           Value: "TheCloudNation EIP"  
+  TheCloudNationEIP:
+    Type: AWS::EC2::EIP
+    Properties: 
+      Tags: 
+        - Key: "Name"
+          Value: "TheCloudNation EIP"  
 
-#   TheCloudNationEipAssociate:
-#     Type: AWS::EC2::EIPAssociation
-#     Properties: 
-#         EIP: !Ref TheCloudNationEIP
-#         InstanceId: !Ref TheCloudNationInstance
+  TheCloudNationEipAssociate:
+    Type: AWS::EC2::EIPAssociation
+    Properties: 
+        EIP: !Ref TheCloudNationEIP
+        InstanceId: !Ref TheCloudNationInstance
