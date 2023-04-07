@@ -1,0 +1,19 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CFT to create Elastic filesystem
+Resources:
+  TcnFileSystem:
+    Type: AWS::EFS::FileSystem
+    Properties: 
+      AvailabilityZoneName: us-east-2a
+      Encrypted: false
+      FileSystemTags:
+        - Key: "Name"
+          Value: "TcnFileSystem"
+  TcnMountTarget:
+    Type: AWS::EFS::MountTarget
+    Properties: 
+      FileSystemId: String
+      IpAddress: String
+      SecurityGroups: 
+        - String
+      SubnetId: String        
