@@ -1,9 +1,9 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: 'AWS CloudFormation sample template to creates an Amazon MYSQL RDS database
+Description: 'AWS CloudFormation sample template to create an Amazon MYSQL RDS database
   instance.'
 Parameters:
   DBName:
-    Default: Batch11
+    Default: Batch12
     Description: The MYSQL RDS database name
     Type: String
     MinLength: '1'
@@ -49,9 +49,10 @@ Parameters:
     AllowedValues: ['true', 'false']
     ConstraintDescription: must be true or false.
   VpcId:
-    Default: vpc-0b2075324eb857dc6
+    Default: vpc-0ae395ad9b4be7977
     Type: String  
     Description: VPC for creating the MYSQL RDS
+
 Resources:
   DBSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -71,9 +72,9 @@ Resources:
       DBSubnetGroupDescription: Defining the subnets for creating MYSQL RDS
       DBSubnetGroupName: MYSQL RDS Subnet
       SubnetIds: 
-        - subnet-04a17d3e3a3118124
-        - subnet-0b9da844dd4ec1329
-        - subnet-0b3234069a95dd205
+        - subnet-0c094f6ba82d61b77
+        - subnet-0163ae28a773d9d9c
+        - subnet-0d741bd619f3a7276
       
   MasterDB:
     Type: AWS::RDS::DBInstance
@@ -85,6 +86,8 @@ Resources:
       MasterUsername: !Ref DBUser
       MasterUserPassword: !Ref DBPassword
       MultiAZ: !Ref MultiAZ
+      BackupRetentionPeriod: 0
+      PubliclyAccessible: true
       Tags:
       - Key: Name
         Value: Master Database
