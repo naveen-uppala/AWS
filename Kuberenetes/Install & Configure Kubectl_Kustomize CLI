@@ -1,0 +1,37 @@
+1) SSH to EC2 instance.
+
+2) Install kubectl CLI on slave node:
+
+    Run the below commands to install kubectl:
+ 
+i) curl -o kubectl https://s3.us-west-2.amazonaws.com/amazon-eks/1.23.7/2022-06-29/bin/linux/amd64/kubectl
+
+ii) chmod +x ./kubectl
+
+iii) mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
+
+iv) echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
+
+v) kubectl version --short --client
+
+
+3) Install Kustomize CLI on slave node:
+
+i) curl --silent --location --remote-name \
+  "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/v3.2.3/kustomize_kustomize.v3.2.3_linux_amd64" && \
+  chmod a+x kustomize_kustomize.v3.2.3_linux_amd64 && \
+  sudo mv kustomize_kustomize.v3.2.3_linux_amd64 /usr/local/bin/kustomize
+
+ii) kustomize version
+
+4) Download and install AWS CLI on EC2 instance
+
+5) Configure aws credentials with  "aws configure" command. (prerequisite: you need to create access key id and secrete access token in IAM dashboard).
+
+6) check cluster information using:
+
+     i) aws eks list-clusters
+ 
+     ii) aws eks describe-cluster --name cluster-name.  (Note: replace cluster-name with your cluster name that you have created.)
+
+7) aws eks update-kubeconfig --name cluster-name  --region region. (Note: replace cluster-name with your cluster name that you have created and region with your region code ex: ap-south-1)
