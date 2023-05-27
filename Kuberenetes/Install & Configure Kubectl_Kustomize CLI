@@ -26,7 +26,17 @@ ii) kustomize version
 
 4) Download and install AWS CLI on EC2 instance
 
+i)   curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+ii)  unzip awscliv2.zip 
+iii) sudo ./aws/install 
+
 5) Configure aws credentials with  "aws configure" command. (prerequisite: you need to create access key id and secrete access token in IAM dashboard).
+
+i)   aws configure
+ii)  AWS Access Key ID [None]: XXXXXXXXXXXXXXXXXXXXXX
+iii) AWS Secret Access Key [None]: XXXXXXXXXXXXXXXXXXXXXX
+iv)  Default region name [None]: ap-south-1
+v)   Default output format [None]:
 
 6) check cluster information using:
 
