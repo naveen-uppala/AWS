@@ -29,19 +29,3 @@ ii) kustomize version
 i)   curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 ii)  unzip awscliv2.zip 
 iii) sudo ./aws/install 
-
-5) Configure aws credentials with  "aws configure" command. (prerequisite: you need to create access key id and secrete access token in IAM dashboard).
-
-i)   aws configure
-ii)  AWS Access Key ID [None]: XXXXXXXXXXXXXXXXXXXXXX
-iii) AWS Secret Access Key [None]: XXXXXXXXXXXXXXXXXXXXXX
-iv)  Default region name [None]: ap-south-1
-v)   Default output format [None]:
-
-6) check cluster information using:
-
-     i) aws eks list-clusters
- 
-     ii) aws eks describe-cluster --name cluster-name.  (Note: replace cluster-name with your cluster name that you have created.)
-
-7) aws eks update-kubeconfig --name cluster-name  --region region. (Note: replace cluster-name with your cluster name that you have created and region with your region code ex: ap-south-1)
