@@ -1,6 +1,6 @@
 1) SSH to EC2 instance.
 
-2) Install kubectl CLI on slave node:
+2) Install kubectl CLI on EC2:
 
     Run the below commands to install kubectl:
  
@@ -15,7 +15,7 @@ iv) echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
 v) kubectl version --short --client
 
 
-3) Install Kustomize CLI on slave node:
+3) Install Kustomize CLI on EC2:
 
 i) curl --silent --location --remote-name \
   "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/v3.2.3/kustomize_kustomize.v3.2.3_linux_amd64" && \
