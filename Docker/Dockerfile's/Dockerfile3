@@ -1,0 +1,10 @@
+FROM openjdk:11
+RUN mkdir -p /opt/app
+WORKDIR /opt/app
+COPY target/packersmovers.jar /
+EXPOSE 8081
+RUN mkdir dd
+RUN wget -O dd/dd-java-agent.jar 'https://dtdg.co/latest-java-tracer'
+RUN ls dd
+ENTRYPOINT ["java","-javaagent:/opt/app/dd/dd-java-agent.jar", "-Ddd.logs.injection=true", "-Ddd.service=customer", "-Ddd.env=dev", "-jar", "Packers-Movers.jar"]
+LABEL "com.datadoghq.ad.logs"='[{"source": "springboot", "service": "customer"}]'

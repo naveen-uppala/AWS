@@ -1,0 +1,5 @@
+FROM openjdk:11
+COPY target/packersmovers.jar /
+EXPOSE 8081
+ENTRYPOINT ["java", "-jar", "Packers-Movers.jar"]
+LABEL "com.datadoghq.ad.logs"='[{"source": "springboot", "service": "customer"}]'

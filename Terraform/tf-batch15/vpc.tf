@@ -1,7 +1,7 @@
 # Create VPC
 # terraform aws create vpc
 resource "aws_vpc" "vpc-1" {
-  cidr_block              = "192.168.0.0/16"
+  cidr_block = "192.168.0.0/16"
   tags      = {
     Name    = "Test vpc"
   }
