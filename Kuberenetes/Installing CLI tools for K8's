@@ -1,8 +1,4 @@
-1) SSH to EC2 instance.
-
-2) Install kubectl CLI on EC2:
-
-    Run the below commands to install kubectl:
+################### Install kubectl CLI tool on EC2 #############################
  
 i) curl -o kubectl https://s3.us-west-2.amazonaws.com/amazon-eks/1.23.7/2022-06-29/bin/linux/amd64/kubectl
 
@@ -14,8 +10,7 @@ iv) echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
 
 v) kubectl version --short --client
 
-
-3) Install Kustomize CLI on EC2:
+################### Install  Kustomize CLI tool on EC2 #############################
 
 i) curl --silent --location --remote-name \
   "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/v3.2.3/kustomize_kustomize.v3.2.3_linux_amd64" && \
@@ -24,15 +19,13 @@ i) curl --silent --location --remote-name \
 
 ii) kustomize version
 
-4) Download and install AWS CLI on EC2 instance
+################### Install  AWS CLI tool on EC2 #############################
 
 i)   curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 ii)  unzip awscliv2.zip 
 iii) sudo ./aws/install 
 
-5) Install EKSCTLon EC2.
-
-# for ARM systems, set ARCH to: `arm64`, `armv6` or `armv7`
+################### Install  eksctl CLI tool on EC2 #############################
 
 i) curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$PLATFORM.tar.gz"
 ii) tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm eksctl_$PLATFORM.tar.gz
