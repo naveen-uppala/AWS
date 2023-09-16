@@ -1,0 +1,24 @@
+# Annotations Reference:  https://kubernetes-sigs.github.io/aws-alb-ingress-controller/guide/ingress/annotation/
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-packersmovers-service
+  labels:
+    app: packersmovers
+  annotations:
+    # Ingress Core Settings
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/subnets: subnet-04e139cacc50c68a1, subnet-0abdf1a7bf8d04d11, subnet-0c3a0d305d4e4570a  
+    alb.ingress.kubernetes.io/target-type: ip
+spec:
+  ingressClassName: alb
+  rules:
+  - http:
+      paths:
+      - backend:
+          service:
+            name: customer-service
+            port:
+              number: 8081
+        path: /
+        pathType: Prefix
