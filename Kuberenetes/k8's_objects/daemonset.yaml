@@ -1,42 +1,78 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: fluentd-elasticsearch
-  namespace: kube-system
-  labels:
-    k8s-app: fluentd-logging
+  name: datadog-agent
 spec:
   selector:
-    matchLabels:
-      name: fluentd-elasticsearch
+      matchLabels:
+        app: datadog-agent
   template:
     metadata:
       labels:
-        name: fluentd-elasticsearch
+        app: datadog-agent
+      name: datadog-agent
     spec:
-      tolerations:
-      # these tolerations are to have the daemonset runnable on control plane nodes
-      # remove them if your control plane nodes should not run pods
-      - key: node-role.kubernetes.io/control-plane
-        operator: Exists
-        effect: NoSchedule
-      - key: node-role.kubernetes.io/master
-        operator: Exists
-        effect: NoSchedule
+      serviceAccountName: datadog-agent
       containers:
-      - name: fluentd-elasticsearch
-        image: quay.io/fluentd_elasticsearch/fluentd:v2.5.2
+      - image: public.ecr.aws/datadog/agent:latest
+        imagePullPolicy: Always
+        name: datadog-agent
+        ports:
+          - containerPort: 8125
+            # hostPort: 8125
+            name: dogstatsdport
+            protocol: UDP
+          - containerPort: 8126
+            # hostPort: 8126
+            name: traceport
+            protocol: TCP
+        env:
+          - name: DD_API_KEY
+            value: "<YOUR_API_KEY>"
+          - name: DD_COLLECT_KUBERNETES_EVENTS
+            value: "true"
+          - name: KUBERNETES
+            value: "true"
+          - name: DD_KUBERNETES_KUBELET_HOST
+            valueFrom:
+              fieldRef:
+                fieldPath: status.hostIP
+          - name: DD_CLUSTER_AGENT_ENABLED
+            value: "true"
+          - name: DD_CLUSTER_AGENT_AUTH_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: datadog-auth-token
+                key: token
         resources:
-          limits:
-            memory: 200Mi
           requests:
-            cpu: 100m
-            memory: 200Mi
+            memory: "256Mi"
+            cpu: "200m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
         volumeMounts:
-        - name: varlog
-          mountPath: /var/log
-      terminationGracePeriodSeconds: 30
+          - name: dockersocket
+            mountPath: /var/run/docker.sock
+          - name: procdir
+            mountPath: /host/proc
+            readOnly: true
+          - name: cgroups
+            mountPath: /host/sys/fs/cgroup
+            readOnly: true
+        livenessProbe:
+          exec:
+            command:
+            - ./probe.sh
+          initialDelaySeconds: 15
+          periodSeconds: 5
       volumes:
-      - name: varlog
-        hostPath:
-          path: /var/log
+        - hostPath:
+            path: /var/run/docker.sock
+          name: dockersocket
+        - hostPath:
+            path: /proc
+          name: procdir
+        - hostPath:
+            path: /sys/fs/cgroup
+          name: cgroups
