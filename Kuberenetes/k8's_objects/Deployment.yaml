@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: customer-deployment
+  labels:
+    app: packersmovers
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: packersmovers
+  template:
+    metadata:
+      labels:
+        app: packersmovers
+    spec:
+      containers:
+      - name: customer
+        image: 778611043572.dkr.ecr.us-east-1.amazonaws.com/customer:2
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8081
