@@ -1,0 +1,58 @@
+######################### Set the AWS Load Balancer Controller version ####################
+
+echo 'export LBC_VERSION="v2.4.1"' >>  ~/.bash_profile
+echo 'export LBC_CHART_VERSION="1.4.1"' >>  ~/.bash_profile
+.  ~/.bash_profile
+
+######################## Install the Helm CLI ###############################
+
+curl -sSL https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+helm version --short
+
+
+######################## Create IAM OIDC provider ############################
+
+eksctl utils associate-iam-oidc-provider \
+    --region ${AWS_REGION} \
+    --cluster batch15-cluster \
+    --approve
+
+########################## Create a policy called AWSLoadBalancerControllerIAMPolicy #######################
+
+curl -o iam_policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/${LBC_VERSION}/docs/install/iam_policy.json
+aws iam create-policy \
+    --policy-name AWSLoadBalancerControllerIAMPolicy \
+    --policy-document file://iam_policy.json
+
+########################### Create a IAM role and ServiceAccount ########################
+Note: Please replace the account ID in line 34 with your own aws account id
+
+eksctl create iamserviceaccount \
+  --cluster batch15-cluster \
+  --namespace kube-system \
+  --name aws-load-balancer-controller \
+  --attach-policy-arn arn:aws:iam::573567580560:policy/AWSLoadBalancerControllerIAMPolicy \
+  --override-existing-serviceaccounts \
+  --approve
+
+########################### Install the TargetGroupBinding CRDs ###########################
+
+1) kubectl apply -k "github.com/aws/eks-charts/stable/aws-load-balancer-controller/crds?ref=master"
+
+2) kubectl get crd
+
+############################# Deploy the Helm chart ###############################
+
+1) helm repo add eks https://aws.github.io/eks-charts
+
+2) helm upgrade -i aws-load-balancer-controller \
+    eks/aws-load-balancer-controller \
+    -n kube-system \
+    --set clusterName=batch15-cluster \
+    --set serviceAccount.create=false \
+    --set serviceAccount.name=aws-load-balancer-controller \
+    --set image.tag="${LBC_VERSION}" \
+    --version="${LBC_CHART_VERSION}"
+
+3) kubectl -n kube-system rollout status deployment aws-load-balancer-controller
+
