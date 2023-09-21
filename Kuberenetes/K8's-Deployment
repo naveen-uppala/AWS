@@ -24,8 +24,8 @@ i) aws eks describe-cluster --name cluster-name
 
 6) Navigate to project folder(Csutomer) and run the below commands to deploy application on k8's cluster.
 
-i)  kubectl apply -f eks-deployment.yaml
-ii) kubectl apply -f eks-service.yaml
+i)  kubectl apply -f deployment.yaml
+ii) kubectl apply -f service.yaml
 
 7) Run the below kustomize command to reploy the application with new changes.
 
