@@ -1,7 +1,7 @@
 pipeline{
 
       // agent any	
-    agent { label "#####"}
+    agent { label "slave-1"}
     
      environment {
      
@@ -18,7 +18,7 @@ pipeline{
         
         stage("Cloning git repository"){
             steps{
-                git branch: '#######', credentialsId: 'git_credentials', url: '############'
+                git branch: 'main', credentialsId: 'git_credentials', url: '############'
             }
         }    
         stage("Build jar file using maven"){
@@ -48,20 +48,9 @@ pipeline{
      
      stage('K8S deploy'){
             steps{
-                withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'K8s_config', namespace: '', serverUrl: '') {
-                 sh "/home/jenkins-slave1/bin/kubectl apply -f eks-deployment.yaml"
-                 sh "/home/jenkins-slave1/bin/kubectl apply -f eks-service.yaml"
+                withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'kube_config', namespace: '', serverUrl: '') {
+                 sh "kustomize edit set image ${REPOSITORY_URI} && /home/jenkins-slave1/bin/kubectl apply -k ."
                }
-            }
-        }
-     
-     stage("Re-deploy application on K8's cluster with new code changes"){
-            steps{
-                withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'K8s_config', namespace: '', serverUrl: '') {
-                 sh "kustomize edit set image 703550360617.dkr.ecr.ap-south-1.amazonaws.com/batch9:latest=703550360617.dkr.ecr.ap-south-1.amazonaws.com/batch9:${IMAGE_TAG}"    
-                 sh "kustomize build ."
-                 sh "kubectl delete -f eks-deployment.yaml && kubectl create --kustomize ."   
-                 }
             }
         }
     }
