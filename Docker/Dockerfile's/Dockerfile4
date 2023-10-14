@@ -3,8 +3,7 @@ COPY /. /java/
 RUN mvn -f /java/pom.xml clean package
 
 ########## Second Stage build ###########
-#FROM amazoncorretto:17-alpine
-FROM gcr.io/distroless/java17-debian12
+#FROM gcr.io/distroless/java17-debian12
 FROM amazoncorretto:17-alpine
 COPY --from=build1 /java/target/packersmovers.jar /java/packersmovers.jar
 EXPOSE 8080
