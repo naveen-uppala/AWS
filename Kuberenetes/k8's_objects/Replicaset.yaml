@@ -1,21 +1,23 @@
 apiVersion: apps/v1
-kind: ReplicaSet
+kind: Replicaset
 metadata:
-  name: frontend
+  name: customer-rs
   labels:
-    app: guestbook
-
+    app: packersmovers
 spec:
-  # modify replicas according to your case
   replicas: 3
+  minReadySeconds: 10
   selector:
     matchLabels:
-      app: guestbook
+      app: packersmovers
   template:
     metadata:
       labels:
-        app:guestbook
+        app: packersmovers
     spec:
       containers:
-      - name: php-redis
-        image: gcr.io/google_samples/gb-frontend:v3
+      - name: customer
+        image: 573567580560.dkr.ecr.ap-south-1.amazonaws.com/customer:3
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
