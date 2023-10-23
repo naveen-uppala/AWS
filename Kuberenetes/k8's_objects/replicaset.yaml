@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: customer
+  labels:
+    app: java
+spec:
+  replicas: 3
+  minReadySeconds: 10
+  selector:
+    matchLabels:
+      app: java
+  template:
+    metadata:
+      labels:
+        app: java
+    spec:
+      containers:
+      - name: customer
+        image: 573567580560.dkr.ecr.us-east-2.amazonaws.com/customer:4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
