@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: customer-pod
+spec:
+  containers:
+  - name: customer
+    image: 573567580560.dkr.ecr.ap-south-1.amazonaws.com/customer:latest
+    ports:
+    - containerPort: 8081

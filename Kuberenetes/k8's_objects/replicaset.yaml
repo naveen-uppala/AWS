@@ -1,23 +1,23 @@
 apiVersion: apps/v1
-kind: ReplicaSet
+kind: Replicaset
 metadata:
-  name: customer
+  name: customer-rs
   labels:
-    app: java
+    app: packersmovers
 spec:
   replicas: 3
   minReadySeconds: 10
   selector:
     matchLabels:
-      app: java
+      app: packersmovers
   template:
     metadata:
       labels:
-        app: java
+        app: packersmovers
     spec:
       containers:
       - name: customer
-        image: 573567580560.dkr.ecr.us-east-2.amazonaws.com/customer:4
+        image: 573567580560.dkr.ecr.ap-south-1.amazonaws.com/customer:3
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
