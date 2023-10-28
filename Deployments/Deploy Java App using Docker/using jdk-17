@@ -1,3 +1,4 @@
+Choose Amazon Linux 2023 Version
 ########################## UPDATE LINUX PACKAGES ###################
 
 1) sudo yum update -y
@@ -42,9 +43,10 @@
 
 4) sudo systemctl enable docker
 
-5) sudo setfacl -m user:ec2-user:rw /var/run/docker.sock
+5) sudo usermod -a -G docker ec2-user
 
-6) sudo usermod -a -G docker ec2-user
+6) sudo setfacl -m user:ec2-user:rw /var/run/docker.sock
+
 
 
 ########################## INSTALL GIT ###################
