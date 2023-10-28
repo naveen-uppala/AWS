@@ -1,0 +1,51 @@
+########################## UPDATE LINUX PACKAGES ###################
+
+1) sudo yum update -y
+
+########################## INSTALL JAVA-jdk-17 ###################
+
+1) sudo yum install java-17-amazon-corretto-headless
+
+2) java --version
+
+########################## Download Latest Apache Maven on Amazon Linux 2 ###################
+
+1) cd /tmp
+
+2) wget https://dlcdn.apache.org/maven/maven-3/3.9.4/binaries/apache-maven-3.9.4-bin.tar.gz
+
+3) sudo tar xf /tmp/apache-maven-*.tar.gz -C /opt
+
+4) sudo ln -s /opt/apache-maven-3.9.4 /opt/maven
+
+5) sudo vi /etc/profile.d/maven.sh
+
+         export JAVA_HOME=/usr/lib/jvm/jre-17
+         export M2_HOME=/opt/maven
+         export MAVEN_HOME=/opt/maven
+         export PATH=${M2_HOME}/bin:${PATH}
+
+6) sudo chmod +x /etc/profile.d/maven.sh
+
+7) source /etc/profile.d/maven.sh
+
+8) mvn -version
+
+########################## INSTALL GIT ###################
+
+1) sudo yum install git -y
+
+########################## CLONE GIT REPOSITORY ###################
+
+1) git clone https://github.com/naveen-uppala/Backend.git (Clone git repository into local machine)
+
+2) cd Backend ( Change directory into project folder)
+
+3) mvn clean install ( Create a JAR file using MAVEN)
+
+4) cd target  (Change directory into target folder)
+
+5) nohup java -jar app.jar & (Run SpringBoot application in the background using nohup command)
+
+########################## STOP JAVA APPLICATION ###################
+1) curl -X POST localhost:8081/actuator/shutdown  ( To stop running spring boot application)
