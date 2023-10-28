@@ -1,4 +1,4 @@
 FROM amazoncorretto:17-alpine
 COPY target/packersmovers.jar /
 EXPOSE 8081
-ENTRYPOINT ["java", "-jar", "Packers-Movers.jar"]
+ENTRYPOINT ["java", "-jar", "packersmovers.jar"]
