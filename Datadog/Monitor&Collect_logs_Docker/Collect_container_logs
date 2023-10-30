@@ -1,0 +1,41 @@
+1) Go to Integrations in the Datadog menu in homepage.
+
+2) Go to Agent and choose your desried OS platform. (In our case it's Amazon Linux)
+
+3) Click on "select API key" button, select the radio button and click on "Use API key".
+
+4) Now copy the below command and run it on your Server(ex: EC2 instance). 
+
+5) After the installation is completed, you should see the below logs on the terminal.
+
+Your Datadog Agent is running and functioning properly.
+  It will continue to run in the background and submit metrics to Datadog.
+  If you ever want to stop the Datadog Agent, run:
+
+      sudo systemctl stop datadog-agent
+
+  And to run it again run:
+
+      sudo systemctl start datadog-agent
+
+6) Now check the staus of the datadog-agent by running the following command 
+ 
+sudo systemctl status datadog-agent
+
+And then exit from cosnsole by typing CTRL+C twice.
+
+7) Collecting logs is disabled by default in the Datadog Agent. To enable it, add the following lines in your datadog.yaml configuration file:(/etc/datadog-agent/datadog.yaml)
+
+logs_enabled: true
+listeners:
+    - name: docker
+config_providers:
+    - name: docker
+      polling: true
+logs_config:
+    container_collect_all: true
+
+8) Restart the datadog-agent by runnig the command below.
+
+  -> sudo systemctl start datadog-agent
+

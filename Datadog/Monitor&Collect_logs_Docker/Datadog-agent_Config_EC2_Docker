@@ -1,0 +1,75 @@
+1) Go to Integrations in the Datadog menu in homepage.
+
+2) Go to Agent and choose your desried OS platform. (In our case it's Amazon Linux)
+
+3) Click on "select API key" button, select the radio button and click on "Use API key".
+
+4) Now copy the below command and run it on your Server(ex: EC2 instance). 
+
+5) After the installation is completed, you should see the below logs on the terminal.
+
+Your Datadog Agent is running and functioning properly.
+  It will continue to run in the background and submit metrics to Datadog.
+  If you ever want to stop the Datadog Agent, run:
+
+      sudo systemctl stop datadog-agent
+
+  And to run it again run:
+
+      sudo systemctl start datadog-agent
+
+6) Now check the staus of the datadog-agent by running the following command 
+ 
+sudo systemctl status datadog-agent
+
+And then exit from cosnsole by typing CTRL+C twice.
+
+7) Enable Datadog Process Monitoring by adding the below configuration in the Agent Configuration File:
+
+-> suod vi /etc/datadog-agent/datadog.yaml 
+
+process_config:
+  process_collection:
+    enabled: true
+8) Restart the agent using below command and check process data in datadog
+
+->  sudo systemctl restart datadog-agent
+
+9) Configure Docker integration in Datadog:
+
+-> Open integrations in Datadog
+-> Search for Docker and click on configure
+-> scroll to the bottom and click on install Integration.
+
+8) Add the user dd-agent to Docker's group.
+
+usermod -a -G docker dd-agent
+
+9) Configure the Agent to connect to Docker.
+
+      cd /etc/datadog-agent/conf.d/docker.d/
+
+      sudo cp conf.yaml.default conf.yaml
+
+      sudo vi conf.yaml
+
+Add the below configuration in conf.yaml
+
+ad_identifiers:
+  - _docker
+
+init_config:
+
+instances:
+
+    - url: "unix://var/run/docker.sock"
+      new_tag_names: true   
+
+10) Restart the datadog agent 
+
+    sudo systemctl restart datadog-agent       
+
+    sudo systemctl status datadog-agent. CTRL+C
+
+
+
