@@ -29,6 +29,12 @@ spec:
         env:
           - name: DD_API_KEY
             value: "7f59d1d82319bdb56f82ec0ec222e874"
+          - name: DD_PROCESS_AGENT_ENABLED
+            value: "true"
+          - name: DD_LOGS_ENABLED
+            value: "true"
+          - name: DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL
+            value: "true"
           - name: DD_COLLECT_KUBERNETES_EVENTS
             value: "true"
           - name: KUBERNETES
@@ -54,12 +60,17 @@ spec:
         volumeMounts:
           - name: dockersocket
             mountPath: /var/run/docker.sock
+          - name: passwd
+            mountPath: /etc/passwd
+            readOnly: true
           - name: procdir
             mountPath: /host/proc
             readOnly: true
           - name: cgroups
             mountPath: /host/sys/fs/cgroup
             readOnly: true
+          - name: pointerdir
+            mountPath: /opt/datadog-agent/run  
         livenessProbe:
           exec:
             command:
@@ -71,8 +82,15 @@ spec:
             path: /var/run/docker.sock
           name: dockersocket
         - hostPath:
+            path: /etc/passwd
+          name: passwd
+        - hostPath:
             path: /proc
           name: procdir
         - hostPath:
+            path: /opt/datadog-agent/run
+          name: pointerdir
+        - hostPath:
             path: /sys/fs/cgroup
           name: cgroups
+          
