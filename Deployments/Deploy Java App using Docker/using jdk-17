@@ -32,23 +32,6 @@ Choose Amazon Linux 2023 Version
 
 8) mvn -version
 
-
-########################## INSTALL DOCKER ###################
-
-1) sudo yum update -y
-
-2) sudo yum install -y docker
-
-3) sudo service docker start
-
-4) sudo systemctl enable docker
-
-5) sudo usermod -a -G docker ec2-user
-
-6) sudo setfacl -m user:ec2-user:rw /var/run/docker.sock
-
-
-
 ########################## INSTALL GIT ###################
 
 1) sudo yum install git -y
