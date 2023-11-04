@@ -1,3 +1,0 @@
-i)  kubectl get nodes
-ii) kubectl describe node node_name
-iii) 

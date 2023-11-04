@@ -1,5 +1,0 @@
-FROM amazoncorretto:17-alpine
-COPY target/packersmovers.jar /
-EXPOSE 8081
-ENTRYPOINT ["java", "-jar", "packersmovers.jar"]
-LABEL "com.datadoghq.ad.logs"='[{"source": "springboot", "service": "customer"}]'
