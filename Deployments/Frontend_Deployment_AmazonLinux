@@ -6,7 +6,7 @@ sudo su
 
 yum update -y
 
-yum install nginx
+yum install nginx -y
 #amazon-linux-extras install nginx1
 
 systemctl start nginx
@@ -23,7 +23,7 @@ sudo yum install nodejs -y --setopt=nodesource-nodejs.module_hotfixes=1
 
 ############### Installation of GIT #######################
 
-yum install git
+yum install git -y
 
 ################## Build and Deploy the Application ##################
 
