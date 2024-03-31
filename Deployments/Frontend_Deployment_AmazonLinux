@@ -32,7 +32,7 @@ rm -rf *
 
 git clone github_url
 
-cd front-end/
+cd Frontend
 
 npm install
 
