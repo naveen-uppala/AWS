@@ -37,9 +37,9 @@
 
 ########################## CLONE GIT REPOSITORY ###################
 
-1) git clone https://github.com/naveen-uppala/Backend.git (Clone git repository into local machine)
+1) git clone https://github.com/naveen-uppala/customer.git (Clone git repository into local machine)
 
-2) cd Backend ( Change directory into project folder)
+2) cd customer ( Change directory into project folder)
 
 3) mvn clean install ( Create a JAR file using MAVEN)
 
