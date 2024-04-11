@@ -4,7 +4,7 @@
 
 ########################## INSTALL JAVA-jdk-17 ###################
 
-1) sudo yum install java-17-amazon-corretto-headless
+1) sudo yum install java-17-amazon-corretto-headless -y
 
 2) java --version
 
