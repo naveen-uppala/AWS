@@ -1,0 +1,24 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Provision a sample Amazon Linux Instance and allow SSH connectivity.
+Parameters:
+  TheCloudNationVpcId:
+    Description: 'VPC for creating instance using CFT'
+    Type: String
+    Default: vpc-0ae395ad9b4be7977
+
+Resources:
+  TheCloudNationSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties: 
+      GroupDescription: Creating a SecurityGroup for EC2 instance
+      GroupName: Batch12
+      SecurityGroupIngress: 
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+                      
+      Tags: 
+      - Key: "Name"
+        Value: "TheCloudNationSecurityGroup"
+      VpcId: !Ref TheCloudNationVpcId
