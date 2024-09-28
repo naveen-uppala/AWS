@@ -35,7 +35,7 @@
 
 1) sudo yum install git -y
 
-########################## CLONE GIT REPOSITORY ###################
+########################## Build and Deploy Java Application ###################
 
 1) git clone https://github.com/naveen-uppala/customer.git (Clone git repository into local machine)
 
@@ -46,6 +46,7 @@
 4) cd target  (Change directory into target folder)
 
 5) nohup java -jar customer-1.0.1.jar & (Run SpringBoot application in the background using nohup command)
+
 
 ########################## STOP JAVA APPLICATION ###################
 1) curl -X POST localhost:8080/actuator/shutdown  ( To stop running spring boot application)
