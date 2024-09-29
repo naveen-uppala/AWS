@@ -38,4 +38,4 @@ npm install
 
 npm run build
 
-cp -r build/* /usr/share/nginx/html
+rsync -av --delete build/* /usr/share/nginx/html or (cp -r build/* /usr/share/nginx/html)
