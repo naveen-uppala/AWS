@@ -1,0 +1,53 @@
+Content-Type: multipart/mixed; boundary="//"
+MIME-Version: 1.0
+
+--//
+
+#cloud-config
+cloud_final_modules:
+- [scripts-user, always]
+
+--//
+Content-Type: text/x-shellscript; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+#!/bin/bash
+sudo su - ec2-user
+yum update -y
+yum upgrade -y
+yum install git -y
+set -e
+mvn_version=${mvn_version:-3.9.4}
+url="https://dlcdn.apache.org/maven/maven-3/${mvn_version}/binaries/apache-maven-${mvn_version}-bin.tar.gz"
+mkdir -p /opt/maven
+install_dir="/opt/maven"
+curl -fsSL ${url} | tar zx --strip-components=1 -C ${install_dir}
+cat << EOF > /etc/profile.d/maven.sh
+#!/bin/sh
+export MAVEN_HOME=${install_dir}
+export M2_HOME=${install_dir}
+export M2=${install_dir}/bin
+export PATH=${install_dir}/bin:$PATH
+EOF
+source /etc/profile.d/maven.sh
+yum install java-17-amazon-corretto-headless -y
+rpm -ivh https://github.com/aquasecurity/trivy/releases/download/v0.18.3/trivy_0.18.3_Linux-64bit.rpm
+yum install docker -y
+service docker start
+systemctl enable docker
+usermod -aG docker ec2-user
+setfacl -m user:ec2-user:rw /var/run/docker.sock
+curl -o kubectl https://s3.us-west-2.amazonaws.com/amazon-eks/1.23.7/2022-06-29/bin/linux/amd64/kubectl
+chmod +x ./kubectl
+mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
+echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+mv /tmp/eksctl /usr/local/bin
+curl -sSL https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+yum install nginx -y
+systemctl start nginx
+systemctl enable nginx
+yum install https://rpm.nodesource.com/pub_16.x/nodistro/repo/nodesource-release-nodistro-1.noarch.rpm -y
+yum install nodejs -y --setopt=nodesource-nodejs.module_hotfixes=1
+--//--
