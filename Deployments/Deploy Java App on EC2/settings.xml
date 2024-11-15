@@ -1,0 +1,26 @@
+<settings>
+<servers>
+  <server>
+    <id>thecloudnation-customer</id>
+    <username>aws</username>
+    <password>${env.CODEARTIFACT_AUTH_TOKEN}</password>
+  </server>
+</servers>
+<profiles>
+  <profile>
+    <id>thecloudnation-customer</id>
+    <activation>
+      <activeByDefault>true</activeByDefault>
+    </activation>
+    <repositories>
+      <repository>
+        <id>thecloudnation-customer</id>
+        <url>https://thecloudnation-054037107230.d.codeartifact.us-east-2.amazonaws.com/maven/customer/</url>
+      </repository>
+    </repositories>
+  </profile>
+</profiles>
+   <activeProfiles>
+      <activeProfile>thecloudnation-customer</activeProfile>
+   </activeProfiles>
+</settings>
