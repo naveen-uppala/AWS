@@ -37,6 +37,12 @@ export PATH=${install_dir}/bin:$PATH
 EOF
 source /etc/profile.d/maven.sh
 
+# Export a CodeArtifact authorization token for authorization to your repository from your preferred shell.
+AWS_ACCOUNT_ID="054037107230"
+REGION="us-east-2"
+DOMAIN_NAME="thecloudnation"
+export CODEARTIFACT_AUTH_TOKEN=`aws codeartifact get-authorization-token --domain $DOMAIN_NAME --domain-owner $AWS_ACCOUNT_ID --region $REGION --query authorizationToken --output text`
+
 # Define the directory for Maven settings
 MAVEN_SETTINGS_DIR="/home/ec2-user/.m2"
 MAVEN_SETTINGS_FILE="$MAVEN_SETTINGS_DIR/settings.xml"
@@ -80,6 +86,10 @@ chmod 600 "$MAVEN_SETTINGS_FILE"
 # Output to verify creation
 echo "Maven settings.xml has been created at $MAVEN_SETTINGS_FILE"
 
-# Export a CodeArtifact authorization token for authorization to your repository from your preferred shell.
-export CODEARTIFACT_AUTH_TOKEN=`aws codeartifact get-authorization-token --domain thecloudnation --domain-owner 054037107230 --region us-east-2 --query authorizationToken --output text`
+#Download artifact and run the spring boot application
+mkdir -p /home/ec2-user/java/
+cp /home/ec2-user/.m2/repository/com/naveen/customer/1.0.1-SNAPSHOT/customer-1.0.1-SNAPSHOT.jar /home/ec2-user/java/
+java -jar /home/ec2-user/java/customer-1.0.1-SNAPSHOT.jar > /var/log/my-app.log 2>&1 &
+
+
 --//--
