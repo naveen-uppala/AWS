@@ -28,8 +28,8 @@ npm run build
 
 cp -r build server
 
-npm install -f
-
 cd server
+
+npm install -f
 
 nohup node index.js &
