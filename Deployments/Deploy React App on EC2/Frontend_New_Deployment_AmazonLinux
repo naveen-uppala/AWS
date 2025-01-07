@@ -30,4 +30,6 @@ cp -r build server
 
 npm install -f
 
+cd server
+
 nohup node index.js &
